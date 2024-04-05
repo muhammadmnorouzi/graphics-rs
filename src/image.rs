@@ -1,4 +1,5 @@
 use std::{fs::File, io::Write, vec};
+use crate::rect::Rect;
 
 pub struct Image {
     data: Vec<u32>,
@@ -31,6 +32,19 @@ impl Image{
         }
 
         Ok(())
+    }
+
+    pub fn fill_rect(&mut self, rect : &Rect, fill_color: u32){
+        let x = rect.x.clamp(0, self.width);
+        let w = (x + rect.w).clamp(0, self.width);
+        let y = rect.y.clamp(0, self.height);
+        let h = (y + rect.h).clamp(0, self.height);
+
+        for i in x..w {
+            for j in y..h {
+                self.data[i * self.width + j] = fill_color
+            }
+        }
     }
 }
 
