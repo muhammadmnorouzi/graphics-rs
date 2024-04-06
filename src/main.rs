@@ -12,6 +12,8 @@ fn main() -> std::io::Result<()> {
     image.fill_rect(100, 100, 600, 600);
     image.set_color(0xFF00F0);
     image.fill_circle(WIDTH / 2, HEIGHT / 2, 200);
+    image.set_color(0xF0000F);
+    image.draw_line(0, 0, WIDTH, HEIGHT);
     image.save("image.ppm")?;
 
     Ok(())

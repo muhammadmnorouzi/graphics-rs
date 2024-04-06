@@ -4,7 +4,7 @@ pub struct Image {
     data: Vec<u32>,
     width: usize,
     height: usize,
-    color: u32
+    color: u32,
 }
 
 impl Image {
@@ -15,15 +15,15 @@ impl Image {
             data: vec![fill_color; width * height],
             width,
             height,
-            color: fill_color
+            color: fill_color,
         }
     }
 
-    pub fn set_color(&mut self,color: u32 ){
+    pub fn set_color(&mut self, color: u32) {
         self.color = color
     }
 
-    pub fn fill(&mut self){
+    pub fn fill(&mut self) {
         for i in 0..self.data.len() {
             self.data[i] = self.color;
         }
@@ -61,12 +61,7 @@ impl Image {
         }
     }
 
-    pub fn fill_circle(
-        &mut self,
-        center_x: usize,
-        center_y: usize,
-        radius: usize
-    ) {
+    pub fn fill_circle(&mut self, center_x: usize, center_y: usize, radius: usize) {
         let (x1, x2, y1, y2) = self.get_circle_rect_area(center_x, center_y, radius);
 
         for col in y1..=y2 {
@@ -81,14 +76,31 @@ impl Image {
         }
     }
 
-    pub fn draw_line(
-        &mut self,
-        x1: usize,
-        y1: usize,
-        x2: usize,
-        y2: usize,
-    ){
+    pub fn draw_line(&mut self, x1: usize, y1: usize, x2: usize, y2: usize) {
+        let x1 = x1.clamp(0, self.width);
+        let x2 = x2.clamp(0, self.width);
+        let y1 = y1.clamp(0, self.height);
+        let y2 = y2.clamp(0, self.height);
 
+        let (x1, x2) = Image::order_asc(x1, x2);
+        let (y1, y2) = Image::order_asc(y1, y2);
+
+        let dx = x2 - x1;
+        let dy = y2 - y1;
+
+        if dx == 0 {
+            for y in y1..y2 {
+                self.data[y * self.width + x1] = self.color
+            }
+        } else {
+            let slope = dy as f64 / dx as f64;
+
+            for x in x1..x2 {
+                let y = x as f64 * slope + y1 as f64;
+                let y = y as usize;
+                self.data[y * self.width + x] = self.color
+            }
+        }
     }
 
     fn get_circle_rect_area(
@@ -119,5 +131,9 @@ impl Image {
         };
 
         (x1, x2, y1, y2)
+    }
+
+    fn order_asc(a: usize, b: usize) -> (usize, usize) {
+        (usize::min(a, b), usize::max(a, b))
     }
 }
