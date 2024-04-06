@@ -4,6 +4,7 @@ pub struct Image {
     data: Vec<u32>,
     width: usize,
     height: usize,
+    color: u32
 }
 
 impl Image {
@@ -14,6 +15,17 @@ impl Image {
             data: vec![fill_color; width * height],
             width,
             height,
+            color: fill_color
+        }
+    }
+
+    pub fn set_color(&mut self,color: u32 ){
+        self.color = color
+    }
+
+    pub fn fill(&mut self){
+        for i in 0..self.data.len() {
+            self.data[i] = self.color;
         }
     }
 
@@ -36,7 +48,7 @@ impl Image {
         Ok(())
     }
 
-    pub fn fill_rect(&mut self, x: usize, y: usize, width: usize, height: usize, fill_color: u32) {
+    pub fn fill_rect(&mut self, x: usize, y: usize, width: usize, height: usize) {
         let x = x.clamp(0, self.width);
         let w = (x + width).clamp(0, self.width);
         let y = y.clamp(0, self.height);
@@ -44,7 +56,7 @@ impl Image {
 
         for col in y..h {
             for row in x..w {
-                self.data[row * self.width + col] = fill_color
+                self.data[row * self.width + col] = self.color;
             }
         }
     }
@@ -53,8 +65,7 @@ impl Image {
         &mut self,
         center_x: usize,
         center_y: usize,
-        radius: usize,
-        fill_color: u32,
+        radius: usize
     ) {
         let (x1, x2, y1, y2) = self.get_circle_rect_area(center_x, center_y, radius);
 
@@ -64,10 +75,20 @@ impl Image {
                     row.abs_diff(center_x).pow(2) + col.abs_diff(center_y).pow(2) <= radius.pow(2);
 
                 if valid_distance {
-                    self.data[row * self.width + col] = fill_color;
+                    self.data[row * self.width + col] = self.color;
                 }
             }
         }
+    }
+
+    pub fn draw_line(
+        &mut self,
+        x1: usize,
+        y1: usize,
+        x2: usize,
+        y2: usize,
+    ){
+
     }
 
     fn get_circle_rect_area(
