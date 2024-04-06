@@ -1,5 +1,4 @@
 use std::{fs::File, io::Write, vec};
-
 pub struct Image {
     data: Vec<u32>,
     width: usize,
