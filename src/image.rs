@@ -7,6 +7,18 @@ pub struct Image {
 }
 
 impl Image {
+    pub fn width(&self) -> usize {
+        self.width
+    }
+
+    pub fn height(&self) -> usize {
+        self.height
+    }
+
+    pub fn color_at(&self, index: usize) -> u32 {
+        self.data[index]
+    }
+
     pub fn create(width: usize, height: usize, fill_color: Option<u32>) -> Self {
         let fill_color = fill_color.unwrap_or(0);
 
@@ -37,9 +49,9 @@ impl Image {
 
         let mut bytes: [u8; 3] = [0, 0, 0];
         for pixel in &self.data {
-            bytes[0] = (pixel >> (8 * 0) & 0xFF) as u8;
+            bytes[0] = (pixel >> (8 * 2) & 0xFF) as u8;
             bytes[1] = (pixel >> (8 * 1) & 0xFF) as u8;
-            bytes[2] = (pixel >> (8 * 2) & 0xFF) as u8;
+            bytes[2] = (pixel >> (8 * 0) & 0xFF) as u8;
 
             File::write(&mut file, &bytes)?;
         }
@@ -103,15 +115,17 @@ impl Image {
     }
 
     pub fn draw_triangle(
-        &mut self, 
-        x1: usize, 
-        y1: usize, 
-        x2: usize, 
-        y2: usize, 
-        x3: usize, 
-        y3: usize) {
-
-        let (mut x1, mut y1, mut x2, mut y2, mut x3, mut y3) = (x1 as f64, y1 as f64, x2 as f64, y2 as f64, x3 as f64, y3 as f64);
+        &mut self,
+        x1: usize,
+        y1: usize,
+        x2: usize,
+        y2: usize,
+        x3: usize,
+        y3: usize,
+    ) {
+        let (mut x1, mut y1, mut x2, mut y2, mut x3, mut y3) = (
+            x1 as f64, y1 as f64, x2 as f64, y2 as f64, x3 as f64, y3 as f64,
+        );
         Image::order_triangle_vertices_by_y(&mut x1, &mut y1, &mut x2, &mut y2, &mut x3, &mut y3);
 
         let dx12 = x2 - x1;
