@@ -10,31 +10,31 @@ use winit::{
     window::WindowBuilder,
 };
 
-use crate::image::Image;
+use crate::image::Canvas;
 
 // Constants
 const WIDTH: u32 = 800;
 const HEIGHT: u32 = 800;
 
 fn main() -> Result<(), String> {
-    let mut image = Image::create(WIDTH as usize, HEIGHT as usize, None);
-    image.set_color(color::BLACK);
-    image.fill();
-    image.set_color(color::GREEN);
-    image.fill_rect(100, 100, 600, 600);
-    image.set_color(color::RED);
-    image.fill_circle(WIDTH as usize / 2, HEIGHT as usize / 2, 200);
-    image.set_color(color::BLUE);
-    image.draw_line(0, 0, WIDTH as usize, HEIGHT as usize);
-    image.set_color(color::WHITE);
-    image.draw_triangle(10, 10, 0, 400, 20, 450);
-    image.save("image.ppm").map_err(|error| error.to_string())?;
-    show(&image)?;
+    let mut canvas = Canvas::create(WIDTH as usize, HEIGHT as usize, None);
+    canvas.set_color(color::BLACK);
+    canvas.fill();
+    canvas.set_color(color::GREEN);
+    canvas.fill_rect(100, 100, 600, 600);
+    canvas.set_color(color::RED);
+    canvas.fill_circle(WIDTH as usize / 2, HEIGHT as usize / 2, 200);
+    canvas.set_color(color::BLUE);
+    canvas.draw_line(0, 0, WIDTH as usize, HEIGHT as usize);
+    canvas.set_color(color::WHITE);
+    canvas.draw_triangle(10, 10, 0, 400, 20, 450);
+    canvas.save("image.ppm").map_err(|error| error.to_string())?;
+    show(&canvas)?;
 
     Ok(())
 }
 
-fn show(image: &Image) -> Result<(), String> {
+fn show(canvas: &Canvas) -> Result<(), String> {
     let event_loop = EventLoop::new().map_err(|error| error.to_string())?;
 
     let window = Rc::new(
@@ -66,8 +66,8 @@ fn show(image: &Image) -> Result<(), String> {
                         .expect("could not resize surface!");
 
                     let mut buffer = surface.buffer_mut().expect("could not get mut buffer!");
-                    for index in 0..image.width() * image.height() {
-                        buffer[index as usize] = image.color_at(index);
+                    for index in 0..canvas.width() * canvas.height() {
+                        buffer[index as usize] = canvas.color_at(index);
                     }
 
                     buffer.present().unwrap();

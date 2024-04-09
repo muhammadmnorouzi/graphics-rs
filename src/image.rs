@@ -1,12 +1,12 @@
 use std::{fs::File, io::Write, vec};
-pub struct Image {
+pub struct Canvas {
     data: Vec<u32>,
     width: usize,
     height: usize,
     color: u32,
 }
 
-impl Image {
+impl Canvas {
     pub fn width(&self) -> usize {
         self.width
     }
@@ -93,8 +93,8 @@ impl Image {
         let y1 = y1.clamp(0, self.height);
         let y2 = y2.clamp(0, self.height);
 
-        let (x1, x2) = Image::order_asc(x1, x2);
-        let (y1, y2) = Image::order_asc(y1, y2);
+        let (x1, x2) = Canvas::order_asc(x1, x2);
+        let (y1, y2) = Canvas::order_asc(y1, y2);
 
         let dx = x2 - x1;
         let dy = y2 - y1;
@@ -126,7 +126,7 @@ impl Image {
         let (mut x1, mut y1, mut x2, mut y2, mut x3, mut y3) = (
             x1 as f64, y1 as f64, x2 as f64, y2 as f64, x3 as f64, y3 as f64,
         );
-        Image::order_triangle_vertices_by_y(&mut x1, &mut y1, &mut x2, &mut y2, &mut x3, &mut y3);
+        Canvas::order_triangle_vertices_by_y(&mut x1, &mut y1, &mut x2, &mut y2, &mut x3, &mut y3);
 
         let dx12 = x2 - x1;
         let dy12 = y2 - y1;
