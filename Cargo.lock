@@ -652,7 +652,7 @@ dependencies = [
 
 [[package]]
 name = "graphics-rs"
-version = "0.0.3"
+version = "0.0.4"
 dependencies = [
  "image",
  "softbuffer",
