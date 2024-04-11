@@ -1,8 +1,9 @@
-mod color;
 mod canvas;
+mod color;
 
-use std::{num::NonZeroU32, rc::Rc};
+use std::{num::NonZeroU32, ops::ControlFlow, rc::Rc};
 
+use color::{Color, IsColor};
 use winit::{
     dpi::PhysicalSize,
     event::{Event, WindowEvent},
@@ -18,17 +19,19 @@ const HEIGHT: u32 = 800;
 
 fn main() -> Result<(), String> {
     let mut canvas = Canvas::create(WIDTH as usize, HEIGHT as usize, None);
-    canvas.set_color(color::BLACK);
+    canvas.change_color(color::BLACK);
     canvas.fill();
-    canvas.set_color(color::GREEN);
-    canvas.fill_rect(100, 100, 600, 600);
-    canvas.set_color(color::RED);
-    canvas.fill_circle(WIDTH as usize / 2, HEIGHT as usize / 2, 200);
-    canvas.set_color(color::BLUE);
-    canvas.draw_line(0, 0, WIDTH as usize, HEIGHT as usize);
-    canvas.set_color(color::WHITE);
-    canvas.draw_triangle(10, 10, 0, 400, 20, 450);
-    canvas.save("image.ppm").map_err(|error| error.to_string())?;
+    canvas.change_color(Color::create(u8::MAX, 0, 0, u8::MAX));
+    canvas.fill_rect(0, 0, 800, 600);
+    canvas.change_color(Color::create(0, 0, u8::MAX, 128));
+    canvas.fill_rect(0, 200, 800, 800);
+    canvas.change_color(Color::create(u8::MAX, u8::MAX, u8::MAX, u8::MAX));
+    canvas.fill_rect(300, 0, 200, 800);
+    canvas.change_color(Color::create(0, 255, 0, 80));
+    canvas.fill_circle(400, 400, 300);
+    canvas
+        .save("image.ppm")
+        .map_err(|error| error.to_string())?;
     show(&canvas)?;
 
     Ok(())

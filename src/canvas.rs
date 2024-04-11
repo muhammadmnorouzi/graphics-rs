@@ -1,9 +1,11 @@
+use crate::color::{Color, IsColor};
 use std::{fs::File, io::Write, vec};
+
 pub struct Canvas {
-    data: Vec<u32>,
+    data: Vec<Color>,
     width: usize,
     height: usize,
-    color: u32,
+    color: Color,
 }
 
 impl Canvas {
@@ -15,11 +17,17 @@ impl Canvas {
         self.height
     }
 
-    pub fn color_at(&self, index: usize) -> u32 {
+    pub fn color_at(&self, index: usize) -> Color {
         self.data[index]
     }
 
-    pub fn create(width: usize, height: usize, fill_color: Option<u32>) -> Self {
+    fn set_color_at(&mut self, row: usize, col: usize) {
+        let index = self.width * row + col;
+        let old_color = self.data[index];
+        self.data[index] = old_color.mix(self.color);
+    }
+
+    pub fn create(width: usize, height: usize, fill_color: Option<Color>) -> Self {
         let fill_color = fill_color.unwrap_or(0);
 
         Self {
@@ -30,7 +38,7 @@ impl Canvas {
         }
     }
 
-    pub fn set_color(&mut self, color: u32) {
+    pub fn change_color(&mut self, color: u32) {
         self.color = color
     }
 
@@ -47,13 +55,8 @@ impl Canvas {
             format!("P6\n{} {} 255\n", self.width, self.height).as_bytes(),
         )?;
 
-        let mut bytes: [u8; 3] = [0, 0, 0];
         for pixel in &self.data {
-            bytes[0] = (pixel >> (8 * 2) & 0xFF) as u8;
-            bytes[1] = (pixel >> (8 * 1) & 0xFF) as u8;
-            bytes[2] = (pixel >> (8 * 0) & 0xFF) as u8;
-
-            File::write(&mut file, &bytes)?;
+            File::write(&mut file, &[pixel.red(), pixel.green(), pixel.blue()])?;
         }
 
         Ok(())
@@ -65,9 +68,9 @@ impl Canvas {
         let y = y.clamp(0, self.height);
         let h = (y + height).clamp(0, self.height);
 
-        for col in y..h {
-            for row in x..w {
-                self.data[row * self.width + col] = self.color;
+        for row in y..h {
+            for col in x..w {
+                self.set_color_at(row, col);
             }
         }
     }
@@ -76,12 +79,12 @@ impl Canvas {
         let (x1, x2, y1, y2) = self.get_circle_rect_area(center_x, center_y, radius);
 
         for col in y1..=y2 {
-            for row in x1..=x2 {
+            for row in x1..x2 {
                 let valid_distance =
                     row.abs_diff(center_x).pow(2) + col.abs_diff(center_y).pow(2) <= radius.pow(2);
 
                 if valid_distance {
-                    self.data[row * self.width + col] = self.color;
+                    self.set_color_at(row, col);
                 }
             }
         }
@@ -100,16 +103,16 @@ impl Canvas {
         let dy = y2 - y1;
 
         if dx == 0 {
-            for y in y1..y2 {
-                self.data[y * self.width + x1] = self.color
+            for row in y1..y2 {
+                self.set_color_at(row, x1);
             }
         } else {
             let slope = dy as f64 / dx as f64;
 
-            for x in x1..x2 {
-                let y = x as f64 * slope + y1 as f64;
-                let y = y as usize;
-                self.data[y * self.width + x] = self.color
+            for col in x1..x2 {
+                let y = col as f64 * slope + y1 as f64;
+                let row = y as usize;
+                self.set_color_at(row, col);
             }
         }
     }
@@ -133,24 +136,24 @@ impl Canvas {
         let dx13 = x3 - x1;
         let dy13 = y3 - y1;
 
-        for y in y1 as i64..=y2 as i64 {
-            if y >= 0 && y < self.height as i64 {
+        for row in y1 as i64..=y2 as i64 {
+            if row >= 0 && row < self.height as i64 {
                 let mut s1 = if dy12 != 0f64 {
-                    (y as f64 - y1) * dx12 / dy12 + x1
+                    (row as f64 - y1) * dx12 / dy12 + x1
                 } else {
                     x1
                 };
                 let mut s2 = if dy13 != 0f64 {
-                    (y as f64 - y1) * dx13 / dy13 + x1
+                    (row as f64 - y1) * dx13 / dy13 + x1
                 } else {
                     x1
                 };
                 if s1 > s2 {
                     std::mem::swap(&mut s1, &mut s2)
                 }
-                for x in s1 as i64..=s2 as i64 {
-                    if x >= 0 && x < self.width as i64 {
-                        self.data[y as usize * self.width + x as usize] = self.color;
+                for col in s1 as i64..=s2 as i64 {
+                    if col >= 0 && col < self.width as i64 {
+                        self.set_color_at(row as usize, col as usize);
                     }
                 }
             }
@@ -161,24 +164,24 @@ impl Canvas {
         let dx31 = x1 - x3;
         let dy31 = y1 - y3;
 
-        for y in y2 as i64..=y3 as i64 {
-            if y >= 0 && y < self.height as i64 {
+        for row in y2 as i64..=y3 as i64 {
+            if row >= 0 && row < self.height as i64 {
                 let mut s1 = if dy32 != 0f64 {
-                    (y as f64 - y3) * dx32 / dy32 + x3
+                    (row as f64 - y3) * dx32 / dy32 + x3
                 } else {
                     x3
                 };
                 let mut s2 = if dy31 != 0f64 {
-                    (y as f64 - y3) * dx31 / dy31 + x3
+                    (row as f64 - y3) * dx31 / dy31 + x3
                 } else {
                     x3
                 };
                 if s1 > s2 {
                     std::mem::swap(&mut s1, &mut s2)
                 }
-                for x in s1 as i64..=s2 as i64 {
-                    if x >= 0 && x < self.width as i64 {
-                        self.data[y as usize * self.width + x as usize] = self.color;
+                for col in s1 as i64..=s2 as i64 {
+                    if col >= 0 && col < self.width as i64 {
+                        self.set_color_at(row as usize, col as usize);
                     }
                 }
             }
@@ -212,7 +215,12 @@ impl Canvas {
             self.height
         };
 
-        (x1, x2, y1, y2)
+        (
+            x1.clamp(0, self.width),
+            x2.clamp(0, self.width),
+            y1.clamp(0, self.height),
+            y2.clamp(0, self.height),
+        )
     }
 
     fn order_asc(a: usize, b: usize) -> (usize, usize) {
