@@ -67,9 +67,7 @@ impl Graphics {
                     }
                     _ => (),
                 },
-                _ => {
-                    window.request_redraw()
-                },
+                _ => window.request_redraw(),
             })
             .map_err(|error| error.to_string())?;
 
