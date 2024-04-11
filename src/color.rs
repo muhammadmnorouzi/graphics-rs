@@ -42,12 +42,12 @@ impl IsColor for Color {
         let g2 = rhs.green() as f64;
         let b2 = rhs.blue() as f64;
         let a2 = rhs.alpha() as f64;
-        
+
         let max = u8::MAX as f64;
 
-        let red =   ((r1 * (max - a2) + r2 * a2) / max).clamp(0f64, max) as u8; 
-        let green = ((g1 * (max - a2) + g2 * a2) / max).clamp(0f64, max) as u8; 
-        let blue =  ((b1 * (max - a2) + b2 * a2) / max).clamp(0f64, max) as u8; 
+        let red = ((r1 * (max - a2) + r2 * a2) / max).clamp(0f64, max) as u8;
+        let green = ((g1 * (max - a2) + g2 * a2) / max).clamp(0f64, max) as u8;
+        let blue = ((b1 * (max - a2) + b2 * a2) / max).clamp(0f64, max) as u8;
 
         Color::create(red, green, blue, a1 as u8)
     }

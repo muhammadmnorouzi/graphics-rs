@@ -9,13 +9,11 @@ pub struct Canvas {
 }
 
 impl Canvas {
-    pub fn clamp_row(&self , row: f64) -> f64
-    {
+    pub fn clamp_row(&self, row: f64) -> f64 {
         row.clamp(0f64, (self.height - 1) as f64)
     }
 
-    pub fn clamp_col(&self , col: f64) -> f64
-    {
+    pub fn clamp_col(&self, col: f64) -> f64 {
         col.clamp(0f64, (self.width - 1) as f64)
     }
 
@@ -89,7 +87,7 @@ impl Canvas {
         let (x1, x2, y1, y2) = self.get_circle_rect_area(center_x, center_y, radius);
 
         for row in y1..=y2 {
-            for col in  x1..=x2 {
+            for col in x1..=x2 {
                 let valid_distance =
                     col.abs_diff(center_x).pow(2) + row.abs_diff(center_y).pow(2) <= radius.pow(2);
 
@@ -204,13 +202,13 @@ impl Canvas {
         center_y: usize,
         radius: usize,
     ) -> (usize, usize, usize, usize) {
-        let (center_x , center_y, radius) = (center_x as f64, center_y as f64 , radius as f64);
+        let (center_x, center_y, radius) = (center_x as f64, center_y as f64, radius as f64);
         let x1 = self.clamp_col((center_x - radius)) as usize;
         let x2 = self.clamp_col((center_x + radius)) as usize;
         let y1 = self.clamp_row((center_y - radius)) as usize;
         let y2 = self.clamp_row((center_y + radius)) as usize;
 
-        (x1 , x2, y1, y2)
+        (x1, x2, y1, y2)
     }
 
     fn order_asc(a: usize, b: usize) -> (usize, usize) {
