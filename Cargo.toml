@@ -7,7 +7,7 @@ description = "A simple 2D graphics package with primitive functionality"
 homepage = "https://github.com/muhammadmnorouzi/graphics-rs"
 documentation = "https://docs.rs/graphics-rs"
 repository = "https://github.com/muhammadmnorouzi/graphics-rs"
-readme = "https://github.com/muhammadmnorouzi/graphics-rs/blob/master/README.MD"
+readme = "README.MD"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
