@@ -28,7 +28,7 @@ fn main() -> Result<(), String> {
     canvas.change_color(Color::create(u8::MAX, u8::MAX, u8::MAX, u8::MAX));
     canvas.fill_rect(300, 0, 200, 800);
     canvas.change_color(Color::create(0, 255, 0, 80));
-    canvas.fill_circle(400, 400, 300);
+    canvas.fill_circle(400  , 400, 400);
     canvas
         .save("image.ppm")
         .map_err(|error| error.to_string())?;

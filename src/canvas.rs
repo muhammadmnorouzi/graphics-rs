@@ -9,6 +9,16 @@ pub struct Canvas {
 }
 
 impl Canvas {
+    pub fn clamp_row(&self , row: f64) -> f64
+    {
+        row.clamp(0f64, (self.height - 1) as f64)
+    }
+
+    pub fn clamp_col(&self , col: f64) -> f64
+    {
+        col.clamp(0f64, (self.width - 1) as f64)
+    }
+
     pub fn width(&self) -> usize {
         self.width
     }
@@ -63,10 +73,10 @@ impl Canvas {
     }
 
     pub fn fill_rect(&mut self, x: usize, y: usize, width: usize, height: usize) {
-        let x = x.clamp(0, self.width);
-        let w = (x + width).clamp(0, self.width);
-        let y = y.clamp(0, self.height);
-        let h = (y + height).clamp(0, self.height);
+        let x = self.clamp_col(x as f64) as usize;
+        let w = self.clamp_col(x as f64 + width as f64) as usize;
+        let y = self.clamp_row(y as f64) as usize;
+        let h = self.clamp_row(y as f64 + height as f64) as usize;
 
         for row in y..h {
             for col in x..w {
@@ -78,10 +88,10 @@ impl Canvas {
     pub fn fill_circle(&mut self, center_x: usize, center_y: usize, radius: usize) {
         let (x1, x2, y1, y2) = self.get_circle_rect_area(center_x, center_y, radius);
 
-        for col in y1..=y2 {
-            for row in x1..x2 {
+        for row in y1..=y2 {
+            for col in  x1..=x2 {
                 let valid_distance =
-                    row.abs_diff(center_x).pow(2) + col.abs_diff(center_y).pow(2) <= radius.pow(2);
+                    col.abs_diff(center_x).pow(2) + row.abs_diff(center_y).pow(2) <= radius.pow(2);
 
                 if valid_distance {
                     self.set_color_at(row, col);
@@ -91,10 +101,10 @@ impl Canvas {
     }
 
     pub fn draw_line(&mut self, x1: usize, y1: usize, x2: usize, y2: usize) {
-        let x1 = x1.clamp(0, self.width);
-        let x2 = x2.clamp(0, self.width);
-        let y1 = y1.clamp(0, self.height);
-        let y2 = y2.clamp(0, self.height);
+        let x1 = self.clamp_col(x1 as f64) as usize;
+        let x2 = self.clamp_col(x2 as f64) as usize;
+        let y1 = self.clamp_row(y1 as f64) as usize;
+        let y2 = self.clamp_row(y2 as f64) as usize;
 
         let (x1, x2) = Canvas::order_asc(x1, x2);
         let (y1, y2) = Canvas::order_asc(y1, y2);
@@ -194,33 +204,13 @@ impl Canvas {
         center_y: usize,
         radius: usize,
     ) -> (usize, usize, usize, usize) {
-        let x1 = if center_x >= radius {
-            center_x - radius
-        } else {
-            0
-        };
-        let x2 = if center_x + radius > self.width {
-            self.width
-        } else {
-            center_x + radius
-        };
-        let y1 = if center_y < radius {
-            0
-        } else {
-            center_y - radius
-        };
-        let y2 = if center_y + radius < self.height {
-            center_y + radius
-        } else {
-            self.height
-        };
+        let (center_x , center_y, radius) = (center_x as f64, center_y as f64 , radius as f64);
+        let x1 = self.clamp_col((center_x - radius)) as usize;
+        let x2 = self.clamp_col((center_x + radius)) as usize;
+        let y1 = self.clamp_row((center_y - radius)) as usize;
+        let y2 = self.clamp_row((center_y + radius)) as usize;
 
-        (
-            x1.clamp(0, self.width),
-            x2.clamp(0, self.width),
-            y1.clamp(0, self.height),
-            y2.clamp(0, self.height),
-        )
+        (x1 , x2, y1, y2)
     }
 
     fn order_asc(a: usize, b: usize) -> (usize, usize) {
