@@ -1,5 +1,5 @@
 mod color;
-mod image;
+mod canvas;
 
 use std::{num::NonZeroU32, rc::Rc};
 
@@ -10,7 +10,7 @@ use winit::{
     window::WindowBuilder,
 };
 
-use crate::image::Canvas;
+use crate::canvas::Canvas;
 
 // Constants
 const WIDTH: u32 = 800;
