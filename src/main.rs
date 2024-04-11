@@ -1,13 +1,11 @@
-pub extern crate image;
-pub extern crate softbuffer;
-pub extern crate winit;
-
-pub mod canvas;
-pub mod color;
+mod canvas;
+mod color;
 
 use std::{num::NonZeroU32, rc::Rc};
-
 use color::{Color, IsColor};
+use canvas::Canvas;
+
+
 use winit::{
     dpi::PhysicalSize,
     event::{Event, WindowEvent},
@@ -15,7 +13,6 @@ use winit::{
     window::WindowBuilder,
 };
 
-use crate::canvas::Canvas;
 
 // Constants
 const WIDTH: u32 = 800;
