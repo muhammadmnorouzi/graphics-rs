@@ -1,5 +1,9 @@
-mod canvas;
-mod color;
+pub extern crate image;
+pub extern crate softbuffer;
+pub extern crate winit;
+
+pub mod canvas;
+pub mod color;
 
 use std::{num::NonZeroU32, rc::Rc};
 
