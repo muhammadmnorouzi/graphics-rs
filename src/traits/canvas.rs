@@ -10,4 +10,5 @@ pub trait Canvas {
     fn color_at(&self, index: usize) -> Color;
     fn width(&self) -> usize;
     fn height(&self) -> usize;
+    fn fits_inside(&self, row: usize, col: usize) -> bool;
 }

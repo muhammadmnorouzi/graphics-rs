@@ -5,7 +5,7 @@ mod traits;
 
 use graphics_rs::{
     graphics::Graphics,
-    shapes::circle::Circle,
+    shapes::{circle::Circle, line::Line},
     simple_canvas::SimpleCanvas,
     traits::{canvas::Canvas, canvas_handler::CanvasHandler},
 };
@@ -18,8 +18,7 @@ struct MyCanvasHandler;
 
 impl CanvasHandler for MyCanvasHandler {
     fn update<T: Canvas>(&mut self, canvas: &mut T) {
-        canvas.change_color(color::GREEN);
-        canvas.draw_shape(&mut Circle::new(100, 100, 50, color::RED));
+        canvas.draw_shape(&mut Line::new(100, 100, 500 , 900, color::RED));
     }
 }
 

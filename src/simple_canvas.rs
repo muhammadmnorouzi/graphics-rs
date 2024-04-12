@@ -45,10 +45,6 @@ impl<'a> SimpleCanvas<'a> {
         }
     }
 
-    fn borrow_mut(&mut self) -> &mut Self {
-        self
-    }
-
     pub fn fill(&mut self) {
         for i in 0..self.data.len() {
             self.data[i] = self.color;
@@ -77,33 +73,6 @@ impl<'a> SimpleCanvas<'a> {
 
         for row in y..h {
             for col in x..w {
-                self.set_pixel(row, col);
-            }
-        }
-    }
-
-    pub fn draw_line(&mut self, x1: usize, y1: usize, x2: usize, y2: usize) {
-        let x1 = self.clamp_col(x1 as f64) as usize;
-        let x2 = self.clamp_col(x2 as f64) as usize;
-        let y1 = self.clamp_row(y1 as f64) as usize;
-        let y2 = self.clamp_row(y2 as f64) as usize;
-
-        let (x1, x2) = NumUtils::order_asc(x1, x2);
-        let (y1, y2) = NumUtils::order_asc(y1, y2);
-
-        let dx = x2 - x1;
-        let dy = y2 - y1;
-
-        if dx == 0 {
-            for row in y1..y2 {
-                self.set_pixel(row, x1);
-            }
-        } else {
-            let slope = dy as f64 / dx as f64;
-
-            for col in x1..x2 {
-                let y = col as f64 * slope + y1 as f64;
-                let row = y as usize;
                 self.set_pixel(row, col);
             }
         }
@@ -217,6 +186,10 @@ impl<'a> Canvas for SimpleCanvas<'a> {
 
     fn height(&self) -> usize {
         self.height
+    }
+    
+    fn fits_inside(&self, row: usize, col: usize) -> bool {
+        return row < self.height && col < self.width
     }
 }
 
