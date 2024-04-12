@@ -1,6 +1,4 @@
-use crate::{color::Color, traits::canvas::Canvas};
-
-use super::shape::Shape;
+use crate::{color::Color, traits::{canvas::Canvas, shape::Shape}};
 
 pub struct Circle {
     cx: usize,
