@@ -1,4 +1,5 @@
-use crate::{color::Color, shapes::shape::Shape};
+use crate::color::Color;
+use super::shape::Shape;
 
 pub trait Canvas {
     fn draw_shape(&mut self, shape :&mut impl Shape);
