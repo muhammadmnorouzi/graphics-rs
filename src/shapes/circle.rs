@@ -1,4 +1,7 @@
-use crate::{color::Color, traits::{canvas::Canvas, shape::Shape}};
+use crate::{
+    color::Color,
+    traits::{canvas::Canvas, shape::Shape},
+};
 
 pub struct Circle {
     cx: usize,
@@ -17,7 +20,7 @@ impl Circle {
         }
     }
 
-    fn get_circle_rect_area(&self, canvas:&mut impl Canvas ) -> (usize, usize, usize, usize) {
+    fn get_circle_rect_area(&self, canvas: &mut impl Canvas) -> (usize, usize, usize, usize) {
         let (center_x, center_y, radius) = (self.cx as f64, self.cy as f64, self.radius as f64);
         let x1 = canvas.clamp_col(center_x - radius) as usize;
         let x2 = canvas.clamp_col(center_x + radius) as usize;

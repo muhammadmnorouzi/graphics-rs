@@ -1,30 +1,37 @@
 mod color;
-mod traits;
+mod math;
 mod shapes;
+mod traits;
 
 use graphics_rs::{
-    graphics::{Graphics, GraphicsHandler}, shapes::circle::Circle, simple_canvas::SimpleCanvas, traits::canvas::Canvas
+    graphics::Graphics,
+    shapes::circle::Circle,
+    simple_canvas::SimpleCanvas,
+    traits::{canvas::Canvas, canvas_handler::CanvasHandler},
 };
-
-struct CustomeHandler {
-    circle: Circle,
-}
-
-impl GraphicsHandler for CustomeHandler {
-    fn draw(&mut self, canvas: &mut SimpleCanvas) {
-        canvas.draw_shape(&mut self.circle);
-    }
-}
 
 // Constants
 const WIDTH: u32 = 800;
 const HEIGHT: u32 = 800;
 
+struct MyCanvasHandler;
+
+impl CanvasHandler for MyCanvasHandler {
+    fn update<T: Canvas>(&mut self, canvas: &mut T) {
+        canvas.change_color(color::GREEN);
+        canvas.draw_shape(&mut Circle::new(100, 100, 50, color::RED));
+    }
+}
+
 fn main() -> Result<(), String> {
-    let canvas = SimpleCanvas::new(WIDTH as usize, HEIGHT as usize, None, false, None);
-    let mut graphics = Graphics::create(canvas);
-    graphics.run(&mut CustomeHandler {
-        circle: Circle::new(400, 400, 200, color::GREEN),
-    })?;
+    let mut canvas = SimpleCanvas::new(
+        WIDTH as usize,
+        HEIGHT as usize,
+        Some(color::BLACK),
+        false,
+        None,
+    );
+    let mut graphics = Graphics::create(&mut canvas)?;
+    graphics.run(&mut MyCanvasHandler {})?;
     Ok(())
 }

@@ -1,5 +1,6 @@
 use std::{num::NonZeroU32, rc::Rc};
 
+use winit::window::Window;
 use winit::{
     dpi::PhysicalSize,
     event::{Event, WindowEvent},
@@ -7,34 +8,41 @@ use winit::{
     window::WindowBuilder,
 };
 
-use crate::simple_canvas::SimpleCanvas;
+use crate::traits::canvas::Canvas;
+use crate::traits::canvas_handler::CanvasHandler;
+use crate::traits::{handles_draw_request::HandlesDrawRequest, requests_draw::RequestDraw};
 
-pub trait GraphicsHandler {
-    fn draw(&mut self, canvas: &mut SimpleCanvas);
+pub struct Graphics<'a, T>
+where
+    T: RequestDraw<'a> + Canvas,
+{
+    canvas: &'a mut T,
+    window: Option<Rc<Window>>,
 }
 
-pub struct Graphics {
-    canvas: SimpleCanvas,
-}
-
-impl Graphics {
-    pub fn create(canvas: SimpleCanvas) -> Self {
-        Self { canvas }
+impl<'a, T: RequestDraw<'a> + Canvas> Graphics<'a, T> {
+    pub fn create(canvas: &'a mut T) -> Result<Self, String> {
+        Ok(Self {
+            canvas: canvas,
+            window: None,
+        })
     }
 
-    pub fn run(&mut self, handler: &mut impl GraphicsHandler) -> Result<(), String> {
+    pub fn run<G: CanvasHandler>(&mut self, handler: &mut G) -> Result<(), String> {
         let event_loop = EventLoop::new().map_err(|error| error.to_string())?;
 
-        let window = Rc::new(
-            WindowBuilder::new()
-                .with_resizable(false)
-                .with_inner_size(PhysicalSize::new(
-                    self.canvas.width() as u32,
-                    self.canvas.height() as u32,
-                ))
-                .build(&event_loop)
-                .map_err(|error| error.to_string())?,
-        );
+        let window = WindowBuilder::new()
+            .with_resizable(false)
+            .with_inner_size(PhysicalSize::new(
+                self.canvas.width() as u32,
+                self.canvas.height() as u32,
+            ))
+            .build(&event_loop)
+            .map_err(|error| error.to_string())?;
+
+        let window = Rc::new(window);
+
+        self.window = Some(window.clone());
 
         let graphics_context =
             softbuffer::Context::new(window.clone()).map_err(|error| error.to_string())?;
@@ -56,8 +64,6 @@ impl Graphics {
                         window_target.exit();
                     }
                     WindowEvent::RedrawRequested => {
-                        handler.draw(&mut self.canvas);
-
                         let mut buffer = surface.buffer_mut().expect("could not get mut buffer!");
                         for index in 0..self.canvas.width() * self.canvas.height() {
                             buffer[index as usize] = self.canvas.color_at(index);
@@ -67,10 +73,18 @@ impl Graphics {
                     }
                     _ => (),
                 },
-                _ => window.request_redraw(),
+                _ => handler.update(self.canvas),
             })
             .map_err(|error| error.to_string())?;
 
         Ok(())
+    }
+}
+
+impl<'a, T: RequestDraw<'a> + Canvas> HandlesDrawRequest for Graphics<'a, T> {
+    fn draw(&self) {
+        if let Some(window) = &self.window {
+            window.request_redraw()
+        }
     }
 }
