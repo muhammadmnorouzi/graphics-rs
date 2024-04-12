@@ -4,7 +4,7 @@ path = "src/lib.rs"
 
 [package]
 name = "graphics-rs"
-version = "0.0.4"
+version = "0.0.5"
 edition = "2021"
 license = "MIT"
 description = "A simple, extendable, CPU based graphics library."

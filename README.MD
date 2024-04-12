@@ -1,1 +1,1 @@
-# graphics-rs is a simple, CPU based, 2D graphics tool
+# A simple, extendable, CPU based graphics library.
