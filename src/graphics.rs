@@ -7,18 +7,18 @@ use winit::{
     window::WindowBuilder,
 };
 
-use crate::canvas::Canvas;
+use crate::simple_canvas::SimpleCanvas;
 
 pub trait GraphicsHandler {
-    fn draw(&mut self, canvas: &mut Canvas);
+    fn draw(&mut self, canvas: &mut SimpleCanvas);
 }
 
 pub struct Graphics {
-    canvas: Canvas,
+    canvas: SimpleCanvas,
 }
 
 impl Graphics {
-    pub fn create(canvas: Canvas) -> Self {
+    pub fn create(canvas: SimpleCanvas) -> Self {
         Self { canvas }
     }
 
