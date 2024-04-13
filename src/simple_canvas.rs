@@ -1,16 +1,11 @@
-use std::{borrow::BorrowMut, fs::File, io::Write, num::NonZeroUsize, process::Output};
+use std::{fs::File, io::Write, num::NonZeroUsize};
 
 use crate::{
     color::{Color, IsColor},
-    graphics::Graphics,
     math::num_utils::NumUtils,
     traits::{
-        antialiasable::Antialiasable,
-        canvas::Canvas,
-        canvas_handler::{self, CanvasHandler},
-        handles_draw_request::HandlesDrawRequest,
-        requests_draw::RequestDraw,
-        shape::Shape,
+        antialiasable::Antialiasable, canvas::Canvas, handles_draw_request::HandlesDrawRequest,
+        requests_draw::RequestDraw, shape::Shape,
     },
 };
 
@@ -42,12 +37,6 @@ impl<'a> SimpleCanvas<'a> {
             antialiasing,
             antialiasing_resolution: anti_aliasing_resolution,
             draw_request_handler: None,
-        }
-    }
-
-    pub fn fill(&mut self) {
-        for i in 0..self.data.len() {
-            self.data[i] = self.color;
         }
     }
 
@@ -187,9 +176,15 @@ impl<'a> Canvas for SimpleCanvas<'a> {
     fn height(&self) -> usize {
         self.height
     }
-    
+
     fn fits_inside(&self, row: usize, col: usize) -> bool {
-        return row < self.height && col < self.width
+        return row < self.height && col < self.width;
+    }
+
+    fn fill(&mut self) {
+        for i in 0..self.data.len() {
+            self.data[i] = self.color;
+        }
     }
 }
 

@@ -11,4 +11,5 @@ pub trait Canvas {
     fn width(&self) -> usize;
     fn height(&self) -> usize;
     fn fits_inside(&self, row: usize, col: usize) -> bool;
+    fn fill(&mut self);
 }

@@ -1,5 +1,7 @@
 use crate::{
-    color::Color, math::num_utils::NumUtils, traits::{canvas::Canvas, shape::Shape}
+    color::Color,
+    math::num_utils::NumUtils,
+    traits::{canvas::Canvas, shape::Shape},
 };
 
 pub struct Line {
@@ -7,21 +9,16 @@ pub struct Line {
     y1: usize,
     x2: usize,
     y2: usize,
-    color: Color,
 }
 
 impl Line {
-    pub fn new( x1: usize, y1: usize, x2: usize, y2: usize, color: Color) -> Self {
-        Self {
-           x1, x2, y1 , y2 , color
-        }
+    pub fn new(x1: usize, y1: usize, x2: usize, y2: usize) -> Self {
+        Self { x1, x2, y1, y2 }
     }
 }
 
 impl Shape for Line {
     fn draw_to(&mut self, canvas: &mut impl Canvas) {
-        canvas.change_color(self.color);
-
         let x1 = canvas.clamp_col(self.x1 as f64) as usize;
         let x2 = canvas.clamp_col(self.x2 as f64) as usize;
         let y1 = canvas.clamp_row(self.y1 as f64) as usize;

@@ -1,3 +1,4 @@
+use std::sync::Arc;
 use std::{num::NonZeroU32, rc::Rc};
 
 use winit::window::Window;
@@ -17,7 +18,7 @@ where
     T: RequestDraw<'a> + Canvas,
 {
     canvas: &'a mut T,
-    window: Option<Rc<Window>>,
+    window: Option<Arc<Window>>,
 }
 
 impl<'a, T: RequestDraw<'a> + Canvas> Graphics<'a, T> {
@@ -40,7 +41,7 @@ impl<'a, T: RequestDraw<'a> + Canvas> Graphics<'a, T> {
             .build(&event_loop)
             .map_err(|error| error.to_string())?;
 
-        let window = Rc::new(window);
+        let window = Arc::new(window);
 
         self.window = Some(window.clone());
 
@@ -64,6 +65,7 @@ impl<'a, T: RequestDraw<'a> + Canvas> Graphics<'a, T> {
                         window_target.exit();
                     }
                     WindowEvent::RedrawRequested => {
+                        handler.update(self.canvas);
                         let mut buffer = surface.buffer_mut().expect("could not get mut buffer!");
                         for index in 0..self.canvas.width() * self.canvas.height() {
                             buffer[index as usize] = self.canvas.color_at(index);
@@ -73,7 +75,7 @@ impl<'a, T: RequestDraw<'a> + Canvas> Graphics<'a, T> {
                     }
                     _ => (),
                 },
-                _ => handler.update(self.canvas),
+                _ => window.request_redraw(),
             })
             .map_err(|error| error.to_string())?;
 
@@ -88,3 +90,5 @@ impl<'a, T: RequestDraw<'a> + Canvas> HandlesDrawRequest for Graphics<'a, T> {
         }
     }
 }
+
+unsafe impl<'a, T: RequestDraw<'a> + Canvas> Sync for Graphics<'a, T> {}

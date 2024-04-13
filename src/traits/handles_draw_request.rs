@@ -1,3 +1,3 @@
-pub trait HandlesDrawRequest {
+pub trait HandlesDrawRequest: Sync {
     fn draw(&self);
 }
