@@ -1,22 +1,17 @@
-use crate::{
-    color::Color,
-    traits::{canvas::Canvas, shape::Shape},
-};
+use crate::traits::{canvas::Canvas, shape::Shape};
 
 pub struct Circle {
     cx: usize,
     cy: usize,
     radius: usize,
-    color: Color,
 }
 
 impl Circle {
-    pub fn new(cx: usize, cy: usize, radius: usize, color: Color) -> Self {
+    pub fn new(cx: usize, cy: usize, radius: usize) -> Self {
         Self {
             cx,
             cy,
             radius,
-            color,
         }
     }
 
@@ -33,7 +28,6 @@ impl Circle {
 
 impl Shape for Circle {
     fn draw_to(&mut self, canvas: &mut impl Canvas) {
-        canvas.change_color(self.color);
         let (x1, x2, y1, y2) = self.get_circle_rect_area(canvas);
 
         for row in y1..=y2 {
