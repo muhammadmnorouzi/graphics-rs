@@ -1,5 +1,5 @@
 use std::sync::Arc;
-use std::{num::NonZeroU32, rc::Rc};
+use std::num::NonZeroU32;
 
 use winit::window::Window;
 use winit::{

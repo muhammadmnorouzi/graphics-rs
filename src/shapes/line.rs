@@ -1,5 +1,4 @@
 use crate::{
-    color::Color,
     math::num_utils::NumUtils,
     traits::{canvas::Canvas, shape::Shape},
 };

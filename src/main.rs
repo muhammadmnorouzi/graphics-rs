@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 mod color;
 mod math;
 mod shapes;
@@ -5,7 +7,7 @@ mod traits;
 
 use graphics_rs::{
     graphics::Graphics,
-    shapes::{line::Line, rect::Rect, triangle::Triangle},
+    shapes::{rect::Rect, triangle::Triangle},
     simple_canvas::SimpleCanvas,
     traits::{canvas::Canvas, canvas_handler::CanvasHandler},
 };

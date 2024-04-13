@@ -2,7 +2,6 @@ use std::{fs::File, io::Write, num::NonZeroUsize};
 
 use crate::{
     color::{Color, IsColor},
-    math::num_utils::NumUtils,
     traits::{
         antialiasable::Antialiasable, canvas::Canvas, handles_draw_request::HandlesDrawRequest,
         requests_draw::RequestDraw, shape::Shape,
