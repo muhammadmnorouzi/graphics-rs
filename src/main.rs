@@ -5,7 +5,7 @@ mod traits;
 
 use graphics_rs::{
     graphics::Graphics,
-    shapes::{line::Line, triangle::Triangle},
+    shapes::{line::Line, rect::Rect, triangle::Triangle},
     simple_canvas::SimpleCanvas,
     traits::{canvas::Canvas, canvas_handler::CanvasHandler},
 };
@@ -23,6 +23,8 @@ impl<'a> CanvasHandler for MyCanvasHandler {
         canvas.draw_shape(&mut Triangle::new(0, 0 , 800, 0, 800, 800));
         canvas.change_color(color::GREEN);
         canvas.draw_shape(&mut Triangle::new(0, 0 , 0, 800, 800, 800));
+        canvas.change_color(color::RED);
+        canvas.draw_shape(&mut Rect::new(100, 100, 600, 600));
         return;
     }
 }

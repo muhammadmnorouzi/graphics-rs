@@ -53,19 +53,6 @@ impl<'a> SimpleCanvas<'a> {
 
         Ok(())
     }
-
-    pub fn fill_rect(&mut self, x: usize, y: usize, width: usize, height: usize) {
-        let x = self.clamp_col(x as f64) as usize;
-        let w = self.clamp_col(x as f64 + width as f64) as usize;
-        let y = self.clamp_row(y as f64) as usize;
-        let h = self.clamp_row(y as f64 + height as f64) as usize;
-
-        for row in y..h {
-            for col in x..w {
-                self.set_pixel(row, col);
-            }
-        }
-    }
 }
 
 impl<'a> Canvas for SimpleCanvas<'a> {
