@@ -1,1 +1,1 @@
-# A simple, extendable, CPU based graphics library.
+# A simple, extendable, CPU based 2D graphics library.
