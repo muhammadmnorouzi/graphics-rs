@@ -3,8 +3,8 @@ use std::{fs::File, io::Write, num::NonZeroUsize};
 use crate::{
     color::{Color, IsColor},
     traits::{
-        antialiasable::Antialiasable, canvas::Canvas, handles_draw_request::HandlesDrawRequest,
-        requests_draw::RequestDraw, shape::Shape,
+        canvas::Canvas, handles_draw_request::HandlesDrawRequest, requests_draw::RequestDraw,
+        shape::Shape,
     },
 };
 
@@ -14,7 +14,7 @@ pub struct SimpleCanvas<'a> {
     height: usize,
     color: Color,
     antialiasing: bool,
-    antialiasing_resolution: Option<NonZeroUsize>,
+    antialiasing_resolution: usize,
     draw_request_handler: Option<&'a dyn HandlesDrawRequest>,
 }
 
@@ -24,8 +24,13 @@ impl<'a> SimpleCanvas<'a> {
         height: usize,
         fill_color: Option<Color>,
         antialiasing: bool,
-        anti_aliasing_resolution: Option<NonZeroUsize>,
+        antialiasing_resolution: usize,
     ) -> Self {
+        let antialiasing_resolution = if antialiasing_resolution == 0 {
+            1
+        } else {
+            antialiasing_resolution
+        };
         let fill_color = fill_color.unwrap_or(0);
 
         Self {
@@ -34,8 +39,8 @@ impl<'a> SimpleCanvas<'a> {
             height,
             color: fill_color,
             antialiasing,
-            antialiasing_resolution: anti_aliasing_resolution,
             draw_request_handler: None,
+            antialiasing_resolution: antialiasing_resolution,
         }
     }
 
@@ -71,12 +76,6 @@ impl<'a> Canvas for SimpleCanvas<'a> {
         col.clamp(0f64, (self.width - 1) as f64)
     }
 
-    fn set_pixel(&mut self, row: usize, col: usize) {
-        let index = self.width * row + col;
-        let old_color = self.data[index];
-        self.data[index] = old_color.mix(self.color);
-    }
-
     fn color_at(&self, index: usize) -> Color {
         self.data[index]
     }
@@ -98,16 +97,29 @@ impl<'a> Canvas for SimpleCanvas<'a> {
             self.data[i] = self.color;
         }
     }
-}
 
-impl<'a> Antialiasable for SimpleCanvas<'a> {
-    fn antialiasing_enabled(&self) -> bool {
+    fn antialiasing(&self) -> bool {
         self.antialiasing
     }
 
-    fn antialiasing_resolution(&self) -> NonZeroUsize {
+    fn resolution(&self) -> usize {
         self.antialiasing_resolution
-            .unwrap_or(NonZeroUsize::new(1).unwrap())
+    }
+
+    fn color(&self) -> Color {
+        self.color
+    }
+
+    fn set_pixel(&mut self, row: usize, col: usize) {
+        self.set_pixel_color(row, col, self.color);
+    }
+
+    fn set_pixel_color(&mut self, row: usize, col: usize, color: Color) {
+        if self.fits_inside(row, col) {
+            let index = self.width * row + col;
+            let old_color = self.data[index];
+            self.data[index] = old_color.mix(color);
+        }
     }
 }
 

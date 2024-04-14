@@ -7,9 +7,13 @@ pub trait Canvas {
     fn clamp_row(&self, row: f64) -> f64;
     fn clamp_col(&self, col: f64) -> f64;
     fn set_pixel(&mut self, row: usize, col: usize);
+    fn set_pixel_color(&mut self, row: usize, col: usize, color: Color);
     fn color_at(&self, index: usize) -> Color;
     fn width(&self) -> usize;
     fn height(&self) -> usize;
     fn fits_inside(&self, row: usize, col: usize) -> bool;
     fn fill(&mut self);
+    fn antialiasing(&self) -> bool;
+    fn resolution(&self) -> usize;
+    fn color(&self) -> Color;
 }

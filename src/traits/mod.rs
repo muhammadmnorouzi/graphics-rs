@@ -1,4 +1,3 @@
-pub mod antialiasable;
 pub mod canvas;
 pub mod canvas_handler;
 pub mod handles_draw_request;

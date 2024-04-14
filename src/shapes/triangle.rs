@@ -14,14 +14,26 @@ pub struct Triangle {
 
 impl Triangle {
     pub fn new(x1: usize, y1: usize, x2: usize, y2: usize, x3: usize, y3: usize) -> Self {
-        Self { x1, x2, y1, y2 , x3 , y3}
+        Self {
+            x1,
+            x2,
+            y1,
+            y2,
+            x3,
+            y3,
+        }
     }
 }
 
 impl Shape for Triangle {
     fn draw_to(&mut self, canvas: &mut impl Canvas) {
         let (mut x1, mut y1, mut x2, mut y2, mut x3, mut y3) = (
-            self.x1 as f64, self.y1 as f64, self.x2 as f64, self.y2 as f64, self.x3 as f64, self.y3 as f64,
+            self.x1 as f64,
+            self.y1 as f64,
+            self.x2 as f64,
+            self.y2 as f64,
+            self.x3 as f64,
+            self.y3 as f64,
         );
 
         NumUtils::order_triangle_vertices_by_y(
