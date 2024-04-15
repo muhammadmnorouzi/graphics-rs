@@ -31,13 +31,8 @@ impl<'a> CanvasHandler for MyCanvasHandler {
 }
 
 fn main() -> Result<(), String> {
-    let mut canvas = SimpleCanvas::new(
-        WIDTH as usize,
-        HEIGHT as usize,
-        Some(color::BLACK),
-        true,
-        4,
-    );
+    let mut canvas =
+        SimpleCanvas::new(WIDTH as usize, HEIGHT as usize, Some(color::BLACK), true, 4);
 
     let mut graphics = Graphics::create(&mut canvas)?;
     graphics.run(&mut MyCanvasHandler {})?;
