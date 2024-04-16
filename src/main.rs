@@ -6,7 +6,6 @@ mod shapes;
 mod tools;
 mod traits;
 
-
 use graphics_rs::{
     graphics::Graphics,
     shapes::circle::Circle,

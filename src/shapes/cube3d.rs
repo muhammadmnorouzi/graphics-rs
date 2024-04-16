@@ -1,14 +1,9 @@
-
 const MIN: i64 = -10;
 const MAX: i64 = -10;
 
 use crate::{
     math::{vec2::Vec2, vec3::Vec3},
-    traits::{
-        canvas::Canvas,
-        project::Project,
-        shape::Shape,
-    },
+    traits::{canvas::Canvas, project::Project, shape::Shape},
 };
 
 pub struct Cube3D<T: Sized + Copy + PartialOrd> {
