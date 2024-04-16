@@ -8,7 +8,7 @@ mod traits;
 
 use graphics_rs::{
     graphics::Graphics,
-    shapes::circle::Circle,
+    shapes::cube3d::Cube3D,
     simple_canvas::SimpleCanvas,
     traits::{canvas::Canvas, canvas_handler::CanvasHandler},
 };
@@ -24,8 +24,7 @@ impl<'a> CanvasHandler for MyCanvasHandler {
         canvas.change_color(color::BLACK);
         canvas.fill();
         canvas.change_color(color::GREEN);
-        canvas.draw_shape(&mut Circle::new(400, 400, 200));
-        return;
+        canvas.draw_shape(&mut Cube3D::new(10));
     }
 }
 
