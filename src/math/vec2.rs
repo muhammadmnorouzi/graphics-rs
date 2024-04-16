@@ -1,11 +1,11 @@
-pub struct Vec2<T: Sized + Copy>{
+pub struct Vec2<T: Sized + Copy> {
     x: T,
-    y: T
+    y: T,
 }
 
-impl<T: Sized+ Copy> Vec2<T> {
+impl<T: Sized + Copy> Vec2<T> {
     pub fn new(x: T, y: T) -> Self {
-        Self {x , y}
+        Self { x, y }
     }
 
     pub fn x(&self) -> T {
