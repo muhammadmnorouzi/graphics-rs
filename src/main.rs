@@ -3,13 +3,13 @@
 mod color;
 mod math;
 mod shapes;
+mod tools;
 mod traits;
 
-use std::num::NonZeroUsize;
 
 use graphics_rs::{
     graphics::Graphics,
-    shapes::{circle::Circle, rect::Rect, triangle::Triangle},
+    shapes::circle::Circle,
     simple_canvas::SimpleCanvas,
     traits::{canvas::Canvas, canvas_handler::CanvasHandler},
 };

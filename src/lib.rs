@@ -5,6 +5,7 @@ pub mod graphics;
 mod math;
 pub mod shapes;
 pub mod simple_canvas;
+pub mod tools;
 pub mod traits;
 pub extern crate image;
 pub extern crate softbuffer;
