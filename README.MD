@@ -12,8 +12,8 @@ fn main() -> Result<(), String> {
     
     let mut canvas =
         SimpleCanvas::new(
-            WIDTH as usize, 
-            HEIGHT as usize, 
+            WIDTH, 
+            HEIGHT, 
             fill_color, 
             antialiasing, 
             antialiasing_resolution);
