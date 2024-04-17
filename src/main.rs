@@ -9,7 +9,7 @@ mod traits;
 use graphics_rs::{
     graphics::Graphics,
     math::vec3::Vec3,
-    shapes::{circle::Circle, point_cloud::PointCloud},
+    shapes::point_cloud::PointCloud,
     simple_canvas::SimpleCanvas,
     tools::camera::Camera,
     traits::{canvas::Canvas, canvas_handler::CanvasHandler},
