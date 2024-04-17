@@ -54,16 +54,20 @@ impl Shape for PointCloud {
             let (x, y) = (point.x(), point.y());
             
             let (x, y) = (x  + canvas.width() as i64 /2 , y  + canvas.height() as i64 /2);
-            let x = x.clamp(usize::MIN as i64, i64::MAX);
-            let y = y.clamp(usize::MIN as i64, i64::MAX);
-            let (x, y) = (x as usize, y as usize);
 
-            canvas.draw_shape(&mut Rect::new(
-                x ,
-                y ,
-                5,
-                5,
-            ));
+            if x >= 0 && x <= canvas.width() as i64 && y >= 0 && y <= canvas.height() as i64 {
+                let x = x.clamp(usize::MIN as i64, i64::MAX);
+                let y = y.clamp(usize::MIN as i64, i64::MAX);
+                let (x, y) = (x as usize, y as usize);
+    
+                canvas.draw_shape(&mut Rect::new(
+                    x ,
+                    y ,
+                    5,
+                    5,
+                ));
+            }
+
         }
     }
 }
