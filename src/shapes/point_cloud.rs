@@ -13,7 +13,8 @@ pub struct PointCloud {
     max: i64,
     fov_factor: i64,
     camera: Camera<i64>,
-    rect_size: usize
+    rotation: Vec3<f64>,
+    size: usize
 }
 
 impl PointCloud {
@@ -23,7 +24,8 @@ impl PointCloud {
         max: i64,
         fov_factor: i64,
         camera: Camera<i64>,
-        rect_size: usize
+        rotation: Vec3<f64>,
+        size: usize
     ) -> Self {
 
         Self {
@@ -32,7 +34,8 @@ impl PointCloud {
             max,
             fov_factor,
             camera,
-            rect_size
+            rotation,
+            size
         }
     }
 
@@ -40,12 +43,20 @@ impl PointCloud {
         let mut projected_points = Vec::<Vec2<i64>>::new();
 
         for point in &self.points {
-            if let Some(point) = self.project(point) {
+            if let Some(point) = self.project(&point.rotate(&self.rotation)) {
                 projected_points.push(point);
             }
         }
 
         projected_points
+    }
+
+    pub fn set_rotation(&mut self, rotation : Vec3<f64>){
+        self.rotation = rotation
+    }
+
+    pub fn rotation(&mut self) -> &mut Vec3<f64>{
+        &mut self.rotation
     }
 }
 
@@ -66,8 +77,8 @@ impl Shape for PointCloud {
                 canvas.draw_shape(&mut Rect::new(
                     x ,
                     y ,
-                    self.rect_size,
-                    self.rect_size,
+                    self.size,
+                    self.size,
                 ));
             }
 
