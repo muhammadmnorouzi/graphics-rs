@@ -1,4 +1,4 @@
-use std::{fs::File, io::Write, num::NonZeroUsize};
+use std::{fs::File, io::Write};
 
 use crate::{
     color::{Color, IsColor},

@@ -9,8 +9,9 @@ mod traits;
 use graphics_rs::{
     graphics::Graphics,
     math::vec3::Vec3,
-    shapes::cube3d::Cube3D,
+    shapes::point_cloud::PointCloud,
     simple_canvas::SimpleCanvas,
+    tools::camera::Camera,
     traits::{canvas::Canvas, canvas_handler::CanvasHandler},
 };
 
@@ -19,7 +20,7 @@ const WIDTH: u32 = 800;
 const HEIGHT: u32 = 800;
 
 struct MyCanvasHandler {
-    cube: Cube3D<u64>,
+    point_cloud: PointCloud,
 }
 
 impl<'a> CanvasHandler for MyCanvasHandler {
@@ -27,7 +28,7 @@ impl<'a> CanvasHandler for MyCanvasHandler {
         canvas.change_color(color::BLACK);
         canvas.fill();
         canvas.change_color(color::GREEN);
-        canvas.draw_shape(&mut self.cube);
+        canvas.draw_shape(&mut self.point_cloud);
         return;
     }
 }
@@ -38,16 +39,16 @@ fn main() -> Result<(), String> {
 
     let mut graphics = Graphics::create(&mut canvas)?;
     graphics.run(&mut MyCanvasHandler {
-        cube: create_cube(),
+        point_cloud: create_point_cloud(),
     })?;
     Ok(())
 }
 
-fn create_cube() -> Cube3D<u64> {
-    let min = 0;
-    let max = 10;
-    let fov_factor = 20;
-    let mut points = Vec::<Vec3<u64>>::new();
+fn create_point_cloud() -> PointCloud {
+    let min = -5;
+    let max = 5;
+    let fov_factor = 60;
+    let mut points = Vec::<Vec3<i64>>::new();
 
     for x in min..max {
         for y in min..max {
@@ -57,5 +58,7 @@ fn create_cube() -> Cube3D<u64> {
         }
     }
 
-    Cube3D::new(points, min, max, fov_factor, |x| x as usize, |x| x as u64)
+    let camera = Camera::new(Vec3::new(0, 0, -5), Vec3::new(0, 0, 0), 90);
+
+    PointCloud::new(points, min, max, fov_factor, camera)
 }
