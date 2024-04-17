@@ -1,32 +1,49 @@
-use std::{char::MAX, collections::btree_map::Range, iter::Step, ops::{Add, Mul}};
+use std::{
+    fmt::Debug,
+    ops::{Add, Mul},
+};
 
 use crate::{
-    math::{vec2::Vec2, vec3::Vec3},
+    math::{num_utils::NumUtils, vec2::Vec2, vec3::Vec3},
     traits::{canvas::Canvas, project::Project, shape::Shape},
 };
 
 use super::rect::Rect;
 
-pub struct Cube3D<T: Sized + Copy + Clone + Add + Mul> {
+pub struct Cube3D<T>
+where
+    T: Sized + Copy + Clone + Add<Output = T> + Mul<Output = T> + Ord + Debug,
+{
     points: Vec<Vec3<T>>,
     min: T,
     max: T,
-    fov_factor: T
+    fov_factor: T,
+    to_usize: fn(T) -> usize,
+    from_usize: fn(usize) -> T,
 }
 
-impl<T: Sized + Copy + Clone+ Add+ Mul> Cube3D<T> {
-    pub fn new(min: T , max: T, fov_factor: T) -> Self {
-        let mut points = Vec::<Vec3<T>>::new();
+impl<T> Cube3D<T>
+where
+    T: Sized + Copy + Clone + Add<Output = T> + Mul<Output = T> + Ord + Debug,
+{
+    pub fn new(
+        points: Vec<Vec3<T>>,
+        min: T,
+        max: T,
+        fov_factor: T,
+        to_usize: fn(T) -> usize,
+        from_usize: fn(usize) -> T,
+    ) -> Self {
+        assert!(min < max);
 
-        for x in min..max {
-            for y in  MIN..MAX {
-                for z in MIN..MAX {
-                    points.push((x, y, z));
-                }
-            }
+        Self {
+            points,
+            min,
+            max,
+            fov_factor,
+            to_usize,
+            from_usize,
         }
-
-        Self { points , fov_factor}
     }
 
     pub fn project_points(&self) -> Vec<Vec2<T>> {
@@ -40,24 +57,38 @@ impl<T: Sized + Copy + Clone+ Add+ Mul> Cube3D<T> {
     }
 }
 
-impl<T: Sized + Copy + Clone + Add + Mul> Shape for Cube3D<T> {
+impl<T> Shape for Cube3D<T>
+where
+    T: Sized + Copy + Clone + Add<Output = T> + Mul<Output = T> + Ord + Debug,
+{
     fn draw_to(&mut self, canvas: &mut impl Canvas) {
         let projected_points = self.project_points();
 
         for point in &projected_points {
             let (x, y) = (point.x(), point.y());
             let (x, y) = (x + self.min, y + self.min);
-            let (x , y) = (x.clamp())
-            let (x, y) = (usize::from(x), y as usize);
+            let x = NumUtils::clamp(
+                x,
+                (self.from_usize)(usize::MIN),
+                (self.from_usize)(usize::MAX),
+            );
+            let y = NumUtils::clamp(
+                y,
+                (self.from_usize)(usize::MIN),
+                (self.from_usize)(usize::MAX),
+            );
 
-            println!("x:{} y:{}", x, y);
+            let (x, y) = ((self.to_usize)(x), (self.to_usize)(y));
 
-            canvas.draw_shape(&mut Rect::new(x, y, 100, 100));
+            canvas.draw_shape(&mut Rect::new(x, y, 5, 5));
         }
     }
 }
 
-impl<T: Sized + Copy + Clone + Add + Mul> Project<T> for Cube3D<T> {
+impl<T> Project<T> for Cube3D<T>
+where
+    T: Sized + Copy + Clone + Add<Output = T> + Mul<Output = T> + Ord + Debug,
+{
     fn project(&self, v3: &Vec3<T>) -> crate::math::vec2::Vec2<T> {
         Vec2::new(v3.x() * self.fov_factor, v3.y() * self.fov_factor)
     }

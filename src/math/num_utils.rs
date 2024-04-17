@@ -1,3 +1,5 @@
+use std::fmt::Debug;
+
 pub struct NumUtils;
 
 impl NumUtils {
@@ -27,5 +29,17 @@ impl NumUtils {
 
     pub fn order_asc<T: Ord + Copy>(a: T, b: T) -> (T, T) {
         (T::min(a, b), T::max(a, b))
+    }
+
+    pub fn clamp<T: Ord + Debug>(val: T, min: T, max: T) -> T {
+        if val < min {
+            return min;
+        }
+
+        if val > max {
+            return max;
+        }
+
+        return val;
     }
 }
