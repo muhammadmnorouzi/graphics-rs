@@ -45,9 +45,9 @@ fn main() -> Result<(), String> {
 }
 
 fn create_point_cloud() -> PointCloud {
-    let min = -5;
-    let max = 5;
-    let fov_factor = 60;
+    let min = -10;
+    let max = 10;
+    let fov_factor = 200;
     let mut points = Vec::<Vec3<i64>>::new();
 
     for x in min..max {
@@ -58,7 +58,7 @@ fn create_point_cloud() -> PointCloud {
         }
     }
 
-    let camera = Camera::new(Vec3::new(0, 0, -5), Vec3::new(0, 0, 0), 90);
+    let camera = Camera::new(Vec3::new(0, 0, -20), Vec3::new(0, 0, 0), 90);
 
-    PointCloud::new(points, min, max, fov_factor, camera)
+    PointCloud::new(points, min, max, fov_factor, camera , 1)
 }

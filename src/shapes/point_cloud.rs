@@ -13,6 +13,7 @@ pub struct PointCloud {
     max: i64,
     fov_factor: i64,
     camera: Camera<i64>,
+    rect_size: usize
 }
 
 impl PointCloud {
@@ -22,6 +23,7 @@ impl PointCloud {
         max: i64,
         fov_factor: i64,
         camera: Camera<i64>,
+        rect_size: usize
     ) -> Self {
 
         Self {
@@ -30,6 +32,7 @@ impl PointCloud {
             max,
             fov_factor,
             camera,
+            rect_size
         }
     }
 
@@ -63,8 +66,8 @@ impl Shape for PointCloud {
                 canvas.draw_shape(&mut Rect::new(
                     x ,
                     y ,
-                    5,
-                    5,
+                    self.rect_size,
+                    self.rect_size,
                 ));
             }
 
