@@ -1,4 +1,3 @@
-
 pub struct NumUtils;
 
 impl NumUtils {

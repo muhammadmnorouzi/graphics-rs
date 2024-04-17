@@ -4,10 +4,10 @@ path = "src/lib.rs"
 
 [package]
 name = "graphics-rs"
-version = "0.0.7"
+version = "0.0.8"
 edition = "2021"
 license = "MIT"
-description = "A simple, extendable, CPU based 2D graphics library."
+description = "A simple, extendable, CPU based 2D graphics library. Also supports CloudPoints and rotation!"
 homepage = "https://github.com/muhammadmnorouzi/graphics-rs"
 documentation = "https://docs.rs/graphics-rs"
 repository = "https://github.com/muhammadmnorouzi/graphics-rs"

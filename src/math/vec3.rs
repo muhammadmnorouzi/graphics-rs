@@ -27,16 +27,16 @@ impl<T: Sized + Copy> Vec3<T> {
     pub fn z(&self) -> T {
         self.z
     }
-    
+
     pub fn set_y(&mut self, y: T) {
         self.y = y;
     }
-    
-    pub fn set_x(&mut self, x: T){
+
+    pub fn set_x(&mut self, x: T) {
         self.x = x;
     }
-    
-    pub fn set_z(&mut self, z: T){
+
+    pub fn set_z(&mut self, z: T) {
         self.z = z;
     }
 
@@ -55,7 +55,7 @@ impl Vec3<i64> {
         let x = (self.y as f64 * cos - self.z as f64 * sin) as i64;
         let z = (self.y as f64 * sin + self.z as f64 * cos) as i64;
 
-        Vec3::<i64>::new(self.x , x , z)
+        Vec3::<i64>::new(self.x, x, z)
     }
 
     pub fn rotate_y(&self, degrees: f64) -> Vec3<i64> {
@@ -65,7 +65,7 @@ impl Vec3<i64> {
         let x = (self.x as f64 * cos - self.z as f64 * sin) as i64;
         let z = (self.x as f64 * sin + self.z as f64 * cos) as i64;
 
-        Vec3::<i64>::new(x , self.y , z)
+        Vec3::<i64>::new(x, self.y, z)
     }
 
     pub fn rotate_z(&self, degrees: f64) -> Vec3<i64> {
@@ -75,13 +75,12 @@ impl Vec3<i64> {
         let x = (self.x as f64 * cos - self.y as f64 * sin) as i64;
         let y = (self.x as f64 * sin + self.y as f64 * cos) as i64;
 
-        Vec3::<i64>::new(x , y , self.z)
+        Vec3::<i64>::new(x, y, self.z)
     }
 
     pub fn rotate(&self, rotation: &Vec3<f64>) -> Vec3<i64> {
-       self
-            .rotate_x(rotation.x)
+        self.rotate_x(rotation.x)
             .rotate_y(rotation.y)
-            .rotate_z(rotation.z) 
+            .rotate_z(rotation.z)
     }
 }
