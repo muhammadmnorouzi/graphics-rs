@@ -1,4 +1,3 @@
-use std::clone;
 
 #[derive(Clone, Copy)]
 pub struct Vec3<T: Sized + Copy> {
