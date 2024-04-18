@@ -28,11 +28,11 @@ impl<'a> CanvasHandler for MyCanvasHandler {
         canvas.change_color(color::BLACK);
         canvas.fill();
 
-        canvas.change_color(color::RED);
+        canvas.change_color(color::GREEN);
         canvas.draw_shape(&mut self.point_cloud);
 
         let rotation = self.point_cloud.rotation();
-        rotation.set_y(rotation.y() + 0.5f64);
+        rotation.set_z(rotation.z() + 1f64);
 
         return;
     }
@@ -60,9 +60,9 @@ fn main() -> Result<(), String> {
 }
 
 fn create_point_cloud() -> PointCloud {
-    let min = -6;
-    let max = 6;
-    let fov_factor = 350;
+    let min = -10;
+    let max = 10;
+    let fov_factor = 200;
     let mut points = Vec::<Vec3<i64>>::new();
     let size = 2;
 

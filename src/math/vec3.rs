@@ -29,12 +29,12 @@ impl<T: Sized + Copy> Vec3<T> {
         self.z
     }
 
-    pub fn set_y(&mut self, y: T) {
-        self.y = y;
-    }
-
     pub fn set_x(&mut self, x: T) {
         self.x = x;
+    }
+
+    pub fn set_y(&mut self, y: T) {
+        self.y = y;
     }
 
     pub fn set_z(&mut self, z: T) {
@@ -53,10 +53,10 @@ impl Vec3<i64> {
         let cos = f64::cos(degrees.to_radians());
         let sin = f64::sin(degrees.to_radians());
 
-        let x = (self.y as f64 * cos - self.z as f64 * sin) as i64;
+        let y = (self.y as f64 * cos - self.z as f64 * sin) as i64;
         let z = (self.y as f64 * sin + self.z as f64 * cos) as i64;
 
-        Vec3::<i64>::new(self.x, x, z)
+        Vec3::<i64>::new(self.x, y, z)
     }
 
     pub fn rotate_y(&self, degrees: f64) -> Vec3<i64> {
@@ -80,13 +80,9 @@ impl Vec3<i64> {
     }
 
     pub fn rotate(&self, rotation: &Vec3<f64>) -> Vec3<i64> {
-        if rotation.magnitude() > 0f64 {
-            self.rotate_x(rotation.x)
-                .rotate_y(rotation.y)
-                .rotate_z(rotation.z)
-        } else {
-            return self.clone();
-        }
+        self.rotate_x(rotation.x)
+            .rotate_y(rotation.y)
+            .rotate_z(rotation.z)
     }
 }
 

@@ -30,7 +30,7 @@ impl<'a> SimpleCanvas<'a> {
         let fill_color = fill_color.unwrap_or(color::BLACK);
 
         Self {
-            buffer: vec![fill_color;width * height],
+            buffer: vec![fill_color; width * height],
             width,
             height,
             color: fill_color,
@@ -51,14 +51,14 @@ impl<'a> SimpleCanvas<'a> {
             format!("P6\n{} {} 255\n", self.width, self.height).as_bytes(),
         )?;
 
-            for i in 0..self.size(){
-                let pixel = self.color_at(i);
-                let red = pixel.red();
-                let green = pixel.green();
-                let blue= pixel.blue();
+        for i in 0..self.size() {
+            let pixel = self.color_at(i);
+            let red = pixel.red();
+            let green = pixel.green();
+            let blue = pixel.blue();
 
-                File::write(&mut file, &[red, green, blue])?;
-            }
+            File::write(&mut file, &[red, green, blue])?;
+        }
 
         Ok(())
     }
@@ -82,7 +82,7 @@ impl<'a> Canvas for SimpleCanvas<'a> {
     }
 
     fn color_at(&self, index: usize) -> Color {
-            return self.buffer[index];
+        return self.buffer[index];
     }
 
     fn width(&self) -> usize {
@@ -125,9 +125,13 @@ impl<'a> Canvas for SimpleCanvas<'a> {
         if self.fits_inside(row, col) {
             let index = self.width * row + col;
             let old_color = self.color_at(index);
-            
+
             self.buffer[index] = old_color.mix(color);
         }
+    }
+    
+    fn buffer_mut_slice(&mut self) -> &mut [Color] {
+        self.buffer.as_mut_slice()
     }
 }
 

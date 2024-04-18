@@ -1,3 +1,4 @@
+use std::mem;
 use std::num::NonZeroU32;
 use std::sync::Arc;
 
@@ -9,6 +10,7 @@ use winit::{
     window::WindowBuilder,
 };
 
+use crate::color::Color;
 use crate::traits::canvas::Canvas;
 use crate::traits::canvas_handler::CanvasHandler;
 use crate::traits::{handles_draw_request::HandlesDrawRequest, requests_draw::RequestDraw};
@@ -19,6 +21,12 @@ where
 {
     canvas: &'a mut T,
     window: Option<Arc<Window>>,
+}
+
+fn copy_color_buffers(dst: &mut [Color], src: &[Color]) {
+    for (d, s) in dst.iter_mut().zip(src.iter()) {
+        *d = *s;
+    }
 }
 
 impl<'a, T: RequestDraw<'a> + Canvas> Graphics<'a, T> {
@@ -67,9 +75,8 @@ impl<'a, T: RequestDraw<'a> + Canvas> Graphics<'a, T> {
                     WindowEvent::RedrawRequested => {
                         handler.update(self.canvas);
                         let mut buffer = surface.buffer_mut().expect("could not get mut buffer!");
-                        for index in 0..self.canvas.width() * self.canvas.height() {
-                            buffer[index as usize] = self.canvas.color_at(index);
-                        }
+                        let mut mb = buffer.as_mut();
+                        copy_color_buffers(&mut mb, self.canvas.buffer_mut_slice());
 
                         buffer.present().unwrap();
                     }

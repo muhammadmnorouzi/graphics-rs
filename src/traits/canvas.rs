@@ -16,4 +16,5 @@ pub trait Canvas {
     fn antialiasing(&self) -> bool;
     fn resolution(&self) -> usize;
     fn color(&self) -> Color;
+    fn buffer_mut_slice(&mut self) -> &mut [Color];
 }
