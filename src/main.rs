@@ -62,7 +62,7 @@ fn main() -> Result<(), String> {
 fn create_point_cloud() -> PointCloud {
     let min = -10;
     let max = 10;
-    let fov_factor = 200;
+    let fov_factor = 150;
     let mut points = Vec::<Vec3<i64>>::new();
     let size = 2;
 

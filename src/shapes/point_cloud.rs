@@ -76,12 +76,14 @@ impl Shape for PointCloud {
                 let (x, y) = (x as usize, y as usize);
 
                 let half_size = self.size / 2;
-                canvas.draw_shape(&mut Rect::new(
-                    x + half_size,
-                    y + half_size,
-                    self.size,
-                    self.size,
-                ));
+                // canvas.draw_shape(&mut Rect::new(
+                //     x + half_size,
+                //     y + half_size,
+                //     self.size,
+                //     self.size,
+                // ));
+
+                canvas.set_pixel(x + half_size, y + half_size);
             }
         }
     }
