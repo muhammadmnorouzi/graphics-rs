@@ -1,7 +1,7 @@
 use std::{fs::File, io::Write};
 
 use crate::{
-    color::{Color, IsColor},
+    color::{self, Color, IsColor},
     traits::{
         canvas::Canvas, handles_draw_request::HandlesDrawRequest, requests_draw::RequestDraw,
         shape::Shape,
@@ -9,7 +9,7 @@ use crate::{
 };
 
 pub struct SimpleCanvas<'a> {
-    data: Vec<Color>,
+    buffer: Vec<Color>,
     width: usize,
     height: usize,
     color: Color,
@@ -26,15 +26,11 @@ impl<'a> SimpleCanvas<'a> {
         antialiasing: bool,
         antialiasing_resolution: usize,
     ) -> Self {
-        let antialiasing_resolution = if antialiasing_resolution == 0 {
-            1
-        } else {
-            antialiasing_resolution
-        };
-        let fill_color = fill_color.unwrap_or(0);
+        let antialiasing_resolution = antialiasing_resolution.clamp(1, usize::MAX);
+        let fill_color = fill_color.unwrap_or(color::BLACK);
 
         Self {
-            data: vec![fill_color; width * height],
+            buffer: vec![fill_color;width * height],
             width,
             height,
             color: fill_color,
@@ -44,16 +40,25 @@ impl<'a> SimpleCanvas<'a> {
         }
     }
 
-    pub fn save(&self, path: &str) -> std::io::Result<()> {
+    pub fn size(&self) -> usize {
+        self.width * self.height
+    }
+
+    pub fn save(&mut self, path: &str) -> std::io::Result<()> {
         let mut file = File::create(path)?;
         File::write(
             &mut file,
             format!("P6\n{} {} 255\n", self.width, self.height).as_bytes(),
         )?;
 
-        for pixel in &self.data {
-            File::write(&mut file, &[pixel.red(), pixel.green(), pixel.blue()])?;
-        }
+            for i in 0..self.size(){
+                let pixel = self.color_at(i);
+                let red = pixel.red();
+                let green = pixel.green();
+                let blue= pixel.blue();
+
+                File::write(&mut file, &[red, green, blue])?;
+            }
 
         Ok(())
     }
@@ -77,7 +82,7 @@ impl<'a> Canvas for SimpleCanvas<'a> {
     }
 
     fn color_at(&self, index: usize) -> Color {
-        self.data[index]
+            return self.buffer[index];
     }
 
     fn width(&self) -> usize {
@@ -93,8 +98,10 @@ impl<'a> Canvas for SimpleCanvas<'a> {
     }
 
     fn fill(&mut self) {
-        for i in 0..self.data.len() {
-            self.data[i] = self.color;
+        for row in 0..self.height {
+            for col in 0..self.width {
+                self.set_pixel_color(row, col, self.color);
+            }
         }
     }
 
@@ -117,8 +124,9 @@ impl<'a> Canvas for SimpleCanvas<'a> {
     fn set_pixel_color(&mut self, row: usize, col: usize, color: Color) {
         if self.fits_inside(row, col) {
             let index = self.width * row + col;
-            let old_color = self.data[index];
-            self.data[index] = old_color.mix(color);
+            let old_color = self.color_at(index);
+            
+            self.buffer[index] = old_color.mix(color);
         }
     }
 }
