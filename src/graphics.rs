@@ -1,4 +1,3 @@
-use std::mem;
 use std::num::NonZeroU32;
 use std::sync::Arc;
 
