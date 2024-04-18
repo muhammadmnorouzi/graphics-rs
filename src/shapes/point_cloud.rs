@@ -44,7 +44,7 @@ impl PointCloud {
             if let Some(point) = self.project(&point.rotate(&self.rotation)) {
                 projected_points.push(point);
             }
-        }
+        };
 
         projected_points
     }

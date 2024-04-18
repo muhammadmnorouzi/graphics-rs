@@ -1,3 +1,6 @@
+use std::clone;
+
+#[derive(Clone, Copy)]
 pub struct Vec3<T: Sized + Copy> {
     x: T,
     y: T,
@@ -79,8 +82,18 @@ impl Vec3<i64> {
     }
 
     pub fn rotate(&self, rotation: &Vec3<f64>) -> Vec3<i64> {
-        self.rotate_x(rotation.x)
+        if rotation.magnitude() > 0f64 {
+            self.rotate_x(rotation.x)
             .rotate_y(rotation.y)
             .rotate_z(rotation.z)
+        }else {
+            return self.clone()
+        }
+    }
+}
+
+impl Vec3<f64> {
+    pub fn magnitude(&self) -> f64 {
+        f64::sqrt(self.x.powf(2f64) + self.y.powf(2f64) + self.y.powf(2f64))
     }
 }
