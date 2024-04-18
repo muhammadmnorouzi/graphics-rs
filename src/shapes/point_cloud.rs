@@ -44,7 +44,7 @@ impl PointCloud {
             if let Some(point) = self.project(&point.rotate(&self.rotation)) {
                 projected_points.push(point);
             }
-        };
+        }
 
         projected_points
     }
@@ -75,7 +75,13 @@ impl Shape for PointCloud {
                 let y = y.clamp(usize::MIN as i64, i64::MAX);
                 let (x, y) = (x as usize, y as usize);
 
-                canvas.draw_shape(&mut Rect::new(x, y, self.size, self.size));
+                let half_size = self.size / 2;
+                canvas.draw_shape(&mut Rect::new(
+                    x + half_size,
+                    y + half_size,
+                    self.size,
+                    self.size,
+                ));
             }
         }
     }

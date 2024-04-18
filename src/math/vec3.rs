@@ -84,10 +84,10 @@ impl Vec3<i64> {
     pub fn rotate(&self, rotation: &Vec3<f64>) -> Vec3<i64> {
         if rotation.magnitude() > 0f64 {
             self.rotate_x(rotation.x)
-            .rotate_y(rotation.y)
-            .rotate_z(rotation.z)
-        }else {
-            return self.clone()
+                .rotate_y(rotation.y)
+                .rotate_z(rotation.z)
+        } else {
+            return self.clone();
         }
     }
 }
