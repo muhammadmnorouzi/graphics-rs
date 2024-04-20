@@ -1,7 +1,7 @@
 use graphics_rs::{
     color,
     graphics::Graphics,
-    shapes::{circle::Circle, line::Line, rect::Rect},
+    shapes::{circle::Circle, line::Line, rect::Rect, triangle::Triangle},
     simple_canvas::SimpleCanvas,
     traits::{canvas::Canvas, canvas_handler::CanvasHandler},
 };
@@ -30,6 +30,12 @@ impl<'a> CanvasHandler for ShapesHandler {
         canvas.draw_shape(&mut Circle::new(200, 600, 50));
         canvas.draw_shape(&mut Circle::new(600, 200, 50));
         canvas.draw_shape(&mut Circle::new(600, 600, 50));
+
+        canvas.change_color(color::WHITE);
+        canvas.draw_shape(&mut Triangle::new(100, 0, 100, 100, 0, 100));
+        canvas.draw_shape(&mut Triangle::new(700, 0, 800, 100, 700, 100));
+        canvas.draw_shape(&mut Triangle::new(100, 700, 100, 800, 0, 700));
+        canvas.draw_shape(&mut Triangle::new(700, 700, 800, 700, 700, 800));
 
         return;
     }

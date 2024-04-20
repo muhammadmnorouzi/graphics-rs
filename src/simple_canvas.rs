@@ -1,10 +1,11 @@
 use std::{fs::File, io::Write};
 
+use crate::color;
 use crate::{
-    color::{self, Color, IsColor},
+    color::Color,
     traits::{
-        canvas::Canvas, handles_draw_request::HandlesDrawRequest, requests_draw::RequestDraw,
-        shape::Shape,
+        canvas::Canvas, handles_draw_request::HandlesDrawRequest, is_color::IsColor,
+        requests_draw::RequestDraw, shape::Shape,
     },
 };
 

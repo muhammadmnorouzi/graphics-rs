@@ -1,3 +1,5 @@
+use crate::traits::is_color::IsColor;
+
 pub type Color = u32;
 
 pub const BLACK: u32 = 0xFF000000;
@@ -6,17 +8,18 @@ pub const RED: u32 = 0xFFFF0000;
 pub const GREEN: u32 = 0xFF00FF00;
 pub const BLUE: u32 = 0xFF0000FF;
 
-pub trait IsColor {
-    fn new(red: u8, green: u8, blue: u8, alpha: u8) -> Self;
-    fn alpha(&self) -> u8;
-    fn red(&self) -> u8;
-    fn green(&self) -> u8;
-    fn blue(&self) -> u8;
-    fn mix(&self, rhs: Self) -> Self;
-    fn with_alpha(&self, alpha: u8) -> Self;
-}
-
 impl IsColor for Color {
+    fn new(red: u8, green: u8, blue: u8, alpha: u8) -> Self {
+        let mut color = 0u32;
+
+        color += (alpha as u32) << (8 * 3);
+        color += (red as u32) << (8 * 2);
+        color += (green as u32) << (8 * 1);
+        color += (blue as u32) << (8 * 0);
+
+        color
+    }
+
     fn alpha(&self) -> u8 {
         ((self >> (8 * 3)) & 0xFF) as u8
     }
@@ -55,16 +58,5 @@ impl IsColor for Color {
         let blue = ((b1 * (max - a2) + b2 * a2) / max).clamp(0f64, max) as u8;
 
         Color::new(red, green, blue, a1 as u8)
-    }
-
-    fn new(red: u8, green: u8, blue: u8, alpha: u8) -> Self {
-        let mut color = 0u32;
-
-        color += (alpha as u32) << (8 * 3);
-        color += (red as u32) << (8 * 2);
-        color += (green as u32) << (8 * 1);
-        color += (blue as u32) << (8 * 0);
-
-        color
     }
 }

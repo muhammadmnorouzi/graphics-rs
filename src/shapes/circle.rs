@@ -1,7 +1,4 @@
-use crate::{
-    color::IsColor,
-    traits::{canvas::Canvas, shape::Shape},
-};
+use crate::traits::{canvas::Canvas, is_color::IsColor, shape::Shape};
 
 pub struct Circle {
     cx: i64,
@@ -55,7 +52,7 @@ impl Circle {
             for col in x1..=x2 {
                 let valid_pixel = row.abs_diff(self.cy).pow(2) + col.abs_diff(self.cx).pow(2)
                     <= self.radius.pow(2) as u64;
-                   
+
                 if valid_pixel {
                     if canvas.fits_inside(row, col) {
                         canvas.set_pixel(row as usize, col as usize);
