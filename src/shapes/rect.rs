@@ -20,10 +20,10 @@ impl Rect {
 
 impl Shape for Rect {
     fn draw_to(&mut self, canvas: &mut impl Canvas) {
-        let x = canvas.clamp_col(self.x as f64) as usize;
-        let w = canvas.clamp_col(self.x as f64 + self.width as f64) as usize;
-        let y = canvas.clamp_row(self.y as f64) as usize;
-        let h = canvas.clamp_row(self.y as f64 + self.height as f64) as usize;
+        let x = canvas.clamp_col(self.x as i64) as usize;
+        let w = canvas.clamp_col(self.x as i64 + self.width as i64) as usize;
+        let y = canvas.clamp_row(self.y as i64) as usize;
+        let h = canvas.clamp_row(self.y as i64 + self.height as i64) as usize;
 
         for row in y..h {
             for col in x..w {

@@ -73,12 +73,12 @@ impl<'a> Canvas for SimpleCanvas<'a> {
         self.color = color
     }
 
-    fn clamp_row(&self, row: f64) -> f64 {
-        row.clamp(0f64, (self.height - 1) as f64)
+    fn clamp_row(&self, row: i64) -> i64 {
+        row.clamp(0, (self.height - 1) as i64)
     }
 
-    fn clamp_col(&self, col: f64) -> f64 {
-        col.clamp(0f64, (self.width - 1) as f64)
+    fn clamp_col(&self, col: i64) -> i64 {
+        col.clamp(0, (self.width - 1) as i64)
     }
 
     fn color_at(&self, index: usize) -> Color {
@@ -93,8 +93,8 @@ impl<'a> Canvas for SimpleCanvas<'a> {
         self.height
     }
 
-    fn fits_inside(&self, row: usize, col: usize) -> bool {
-        return row < self.height && col < self.width;
+    fn fits_inside(&self, row: i64, col: i64) -> bool {
+        return row < self.height as i64 && col < self.width as i64;
     }
 
     fn fill(&mut self) {
@@ -122,7 +122,7 @@ impl<'a> Canvas for SimpleCanvas<'a> {
     }
 
     fn set_pixel_color(&mut self, row: usize, col: usize, color: Color) {
-        if self.fits_inside(row, col) {
+        if self.fits_inside(row as i64, col as i64) {
             let index = self.width * row + col;
             let old_color = self.color_at(index);
 
