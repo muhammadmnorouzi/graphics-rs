@@ -39,7 +39,7 @@ const WIDTH: usize = 800;
 const HEIGHT: usize = 800;
 
 fn main() -> Result<(), String> {
-    let antialiasing = true;
+    let antialiasing = false;
     let antialiasing_resolution = 1;
     let fill_color = Some(color::BLACK);
 
