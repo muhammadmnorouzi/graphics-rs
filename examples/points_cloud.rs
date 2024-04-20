@@ -1,4 +1,12 @@
-use graphics_rs::{color, graphics::Graphics, math::vec3::Vec3, shapes::point_cloud::PointCloud, simple_canvas::SimpleCanvas, tools::camera::Camera, traits::{canvas::Canvas, canvas_handler::CanvasHandler}};
+use graphics_rs::{
+    color,
+    graphics::Graphics,
+    math::vec3::Vec3,
+    shapes::point_cloud::PointCloud,
+    simple_canvas::SimpleCanvas,
+    tools::camera::Camera,
+    traits::{canvas::Canvas, canvas_handler::CanvasHandler},
+};
 
 struct PointsCloudSample {
     point_cloud: PointCloud,
@@ -64,7 +72,9 @@ fn main() -> Result<(), String> {
     );
 
     let mut graphics = Graphics::create(&mut canvas)?;
-    graphics.run(&mut PointsCloudSample {point_cloud: create_point_cloud()})?;
+    graphics.run(&mut PointsCloudSample {
+        point_cloud: create_point_cloud(),
+    })?;
 
     Ok(())
 }

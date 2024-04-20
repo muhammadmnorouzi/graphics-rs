@@ -1,7 +1,4 @@
-use crate::{
-    math::num_utils::NumUtils,
-    traits::{canvas::Canvas, shape::Shape},
-};
+use crate::traits::{canvas::Canvas, shape::Shape};
 
 pub struct Line {
     x1: usize,
@@ -23,19 +20,18 @@ impl Shape for Line {
         let y1 = canvas.clamp_row(self.y1 as i64);
         let y2 = canvas.clamp_row(self.y2 as i64);
 
-        let (x1 , x2, y1 , y2) = if x2 < x1 {
-            (x2 , x2, y2, y1)
+        let (x1, x2, y1, y2) = if x2 < x1 {
+            (x2, x2, y2, y1)
         } else {
-            (x1 , x2, y1 , y2)
+            (x1, x2, y1, y2)
         };
 
         let dx = x2 - x1;
         let dy = y2 - y1;
 
-
         if dx == 0 {
             for row in y1..y2 {
-                if canvas.fits_inside(row, x1){
+                if canvas.fits_inside(row, x1) {
                     canvas.set_pixel(row as usize, x1 as usize);
                 }
             }

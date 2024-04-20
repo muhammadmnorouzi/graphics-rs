@@ -129,7 +129,7 @@ impl<'a> Canvas for SimpleCanvas<'a> {
             self.buffer[index] = old_color.mix(color);
         }
     }
-    
+
     fn buffer_mut_slice(&mut self) -> &mut [Color] {
         self.buffer.as_mut_slice()
     }

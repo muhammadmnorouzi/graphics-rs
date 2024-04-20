@@ -4,7 +4,6 @@ use crate::{
     traits::{canvas::Canvas, project::Project, shape::Shape},
 };
 
-
 pub struct PointCloud {
     points: Vec<Vec3<i64>>,
     min: i64,

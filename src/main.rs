@@ -6,10 +6,7 @@ mod shapes;
 mod tools;
 mod traits;
 
-use graphics_rs::{
-    graphics::Graphics,
-    simple_canvas::SimpleCanvas,
-};
+use graphics_rs::{graphics::Graphics, simple_canvas::SimpleCanvas};
 
 // Constants
 const WIDTH: usize = 800;
@@ -33,4 +30,3 @@ fn main() -> Result<(), String> {
 
     Ok(())
 }
-
