@@ -29,7 +29,7 @@ where
         + std::ops::MulAssign
         + Copy,
 {
-    pub fn create(rows: usize, cols: usize) -> Self {
+    pub fn new(rows: usize, cols: usize) -> Self {
         Self {
             rows,
             cols,
@@ -88,7 +88,7 @@ where
 
     pub fn multiply(&self, rhs: &Matrix<T>) -> Matrix<T> {
         assert!(self.cols == rhs.rows);
-        let mut result = Self::create(self.rows, rhs.cols);
+        let mut result = Self::new(self.rows, rhs.cols);
 
         for i in 0..result.rows {
             for j in 0..result.cols {

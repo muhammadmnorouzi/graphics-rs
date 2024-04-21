@@ -7,6 +7,7 @@ pub mod shapes;
 pub mod simple_canvas;
 pub mod tools;
 pub mod traits;
+pub mod types;
 pub extern crate image;
 pub extern crate softbuffer;
 pub extern crate winit;
