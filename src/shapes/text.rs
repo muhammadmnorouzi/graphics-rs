@@ -1,6 +1,5 @@
 use crate::{
-    traits::{canvas::Canvas, is_color::IsColor, shape::Shape},
-    types::types::A,
+    data::ascii_letters::A, traits::{canvas::Canvas, is_color::IsColor, shape::Shape}
 };
 
 use super::rect::Rect;

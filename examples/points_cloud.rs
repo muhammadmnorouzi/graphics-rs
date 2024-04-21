@@ -32,7 +32,7 @@ fn create_point_cloud() -> PointCloud {
     let max = 7;
     let fov_factor = 200;
     let mut points = Vec::<Vec3<i64>>::new();
-    let size = 2;
+    let size = 1;
 
     for x in min..max {
         for y in min..max {
