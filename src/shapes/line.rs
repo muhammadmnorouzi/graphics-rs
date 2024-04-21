@@ -32,7 +32,7 @@ impl Shape for Line {
         if dx == 0 {
             for row in y1..y2 {
                 if canvas.fits_inside(row, x1) {
-                    canvas.set_pixel(row as usize, x1 as usize);
+                    canvas.set_pixel(row, x1);
                 }
             }
         } else {
@@ -43,7 +43,7 @@ impl Shape for Line {
                 let row = y as i64;
 
                 if canvas.fits_inside(row, col) {
-                    canvas.set_pixel(row as usize, col as usize);
+                    canvas.set_pixel(row, col);
                 }
             }
         }

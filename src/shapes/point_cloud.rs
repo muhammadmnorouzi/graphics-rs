@@ -4,6 +4,8 @@ use crate::{
     traits::{canvas::Canvas, project::Project, shape::Shape},
 };
 
+use super::rect::Rect;
+
 pub struct PointCloud {
     points: Vec<Vec3<i64>>,
     min: i64,
@@ -71,17 +73,14 @@ impl Shape for PointCloud {
             if x >= 0 && x <= canvas.width() as i64 && y >= 0 && y <= canvas.height() as i64 {
                 let x = x.clamp(usize::MIN as i64, i64::MAX);
                 let y = y.clamp(usize::MIN as i64, i64::MAX);
-                let (x, y) = (x as usize, y as usize);
 
-                let half_size = self.size / 2;
-                // canvas.draw_shape(&mut Rect::new(
-                //     x + half_size,
-                //     y + half_size,
-                //     self.size,
-                //     self.size,
-                // ));
-
-                canvas.set_pixel(x + half_size, y + half_size);
+                let half_size = self.size as i64 / 2;
+                canvas.draw_shape(&mut Rect::new(
+                    x + half_size,
+                    y + half_size,
+                    self.size,
+                    self.size,
+                ));
             }
         }
     }

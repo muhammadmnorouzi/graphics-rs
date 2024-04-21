@@ -42,7 +42,7 @@ impl Circle {
                 let color = canvas
                     .color()
                     .with_alpha(alpha.clamp(0f64, u8::MAX as f64) as u8);
-                canvas.set_pixel_color(row as usize, col as usize, color);
+                canvas.set_pixel_color(row, col, color);
             }
         }
     }
@@ -55,7 +55,7 @@ impl Circle {
 
                 if valid_pixel {
                     if canvas.fits_inside(row, col) {
-                        canvas.set_pixel(row as usize, col as usize);
+                        canvas.set_pixel(row, col);
                     }
                 }
             }

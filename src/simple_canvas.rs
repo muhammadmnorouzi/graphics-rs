@@ -101,7 +101,7 @@ impl<'a> Canvas for SimpleCanvas<'a> {
     fn fill(&mut self) {
         for row in 0..self.height {
             for col in 0..self.width {
-                self.set_pixel_color(row, col, self.color);
+                self.set_pixel_color(row as i64, col as i64, self.color);
             }
         }
     }
@@ -118,13 +118,13 @@ impl<'a> Canvas for SimpleCanvas<'a> {
         self.color
     }
 
-    fn set_pixel(&mut self, row: usize, col: usize) {
+    fn set_pixel(&mut self, row: i64, col: i64) {
         self.set_pixel_color(row, col, self.color);
     }
 
-    fn set_pixel_color(&mut self, row: usize, col: usize, color: Color) {
-        if self.fits_inside(row as i64, col as i64) {
-            let index = self.width * row + col;
+    fn set_pixel_color(&mut self, row: i64, col: i64, color: Color) {
+        if self.fits_inside(row, col) {
+            let index = self.width * row as usize + col as usize;
             let old_color = self.color_at(index);
 
             self.buffer[index] = old_color.mix(color);

@@ -62,7 +62,7 @@ impl Shape for Triangle {
                 }
                 for col in s1 as i64..=s2 as i64 {
                     if col >= 0 && col < canvas.width() as i64 {
-                        canvas.set_pixel(row as usize, col as usize);
+                        canvas.set_pixel(row, col);
                     }
                 }
             }
@@ -90,7 +90,7 @@ impl Shape for Triangle {
                 }
                 for col in s1 as i64..=s2 as i64 {
                     if col >= 0 && col < canvas.width() as i64 {
-                        canvas.set_pixel(row as usize, col as usize);
+                        canvas.set_pixel(row, col);
                     }
                 }
             }

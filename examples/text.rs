@@ -14,7 +14,7 @@ impl<'a> CanvasHandler for ShapesHandler {
         canvas.fill();
 
         canvas.change_color(color::WHITE);
-        canvas.draw_shape(&mut Text::new("A", 1, 100, 100));
+        canvas.draw_shape(&mut Text::new("A", 20, 0, 0));
 
         return;
     }
