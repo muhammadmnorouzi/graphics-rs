@@ -1,5 +1,5 @@
 use crate::{
-    data::ascii_letters::A, traits::{canvas::Canvas, is_color::IsColor, shape::Shape}
+    data::ascii_letters::{F as B}, traits::{canvas::Canvas, is_color::IsColor, shape::Shape}
 };
 
 use super::rect::Rect;
@@ -21,9 +21,9 @@ impl Shape for Text {
     fn draw_to(&mut self, canvas: &mut impl Canvas) {
         let original_color = canvas.color();
 
-        for row in 0..A.len() {
-            for col in 0..A[row].len() {
-                canvas.change_color(canvas.color().with_alpha(A[row][col]));
+        for row in 0..B.len() {
+            for col in 0..B[row].len() {
+                canvas.change_color(canvas.color().with_alpha(B[row][col]));
 
                 let row = row as i64 * self.size as i64 + self.y;
                 let col = col as i64 * self.size as i64 + self.x;
